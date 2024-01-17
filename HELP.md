@@ -50,3 +50,10 @@ Perform integration testing.
 
 Documentation:
 Create API documentation for the back-end.
+
+## Views
+- Registration
+- Login
+- Start Page
+- List of tasks
+- Create/update task
