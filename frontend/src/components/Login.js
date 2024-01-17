@@ -11,7 +11,7 @@ function Login(props) {
   return <div>
     <img src={logo} className="App-logo" alt="logo" />
     <form onSubmit={login}>
-      <input name="username" placeholder="Username" />
+      <input name="email" placeholder="Email" />
       <input name="password" placeholder="Password" />
       <button type="submit" >Login</button>
     </form>
