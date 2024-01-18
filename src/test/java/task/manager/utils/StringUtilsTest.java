@@ -8,9 +8,9 @@ public class StringUtilsTest {
 
     @Test
     public void testIsNotBlankUtilityMethod() {
-        Assertions.assertFalse(StringUtils.isNotBlank(null));
-        Assertions.assertFalse(StringUtils.isNotBlank(""));
-        Assertions.assertFalse(StringUtils.isNotBlank("     "));
-        Assertions.assertTrue(StringUtils.isNotBlank("string"));
+        Assertions.assertTrue(StringUtils.isBlank(null));
+        Assertions.assertTrue(StringUtils.isBlank(""));
+        Assertions.assertTrue(StringUtils.isBlank("     "));
+        Assertions.assertFalse(StringUtils.isBlank("string"));
     }
 }
