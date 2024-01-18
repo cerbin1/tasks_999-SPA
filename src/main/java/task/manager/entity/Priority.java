@@ -2,7 +2,7 @@ package task.manager.entity;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "priorities")
 public class Priority {
     @Id
     @Column
