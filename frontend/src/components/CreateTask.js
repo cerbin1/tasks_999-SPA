@@ -18,24 +18,24 @@ function CreateTask(props) {
   return <div>
 
     <form onSubmit={createTask}>
-      <label forHtml="name">Name</label>
+      <label forhtml="name">Name</label>
       <input id="name" name="name" placeholder="Name" />
 
-      <label forHtml="deadline">Deadline</label>
+      <label forhtml="deadline">Deadline</label>
       <input id="deadline" type="date" />
 
 
       <label>
         Assignee:
         <select name="assignee">
-          {persons.map((person) => <option value={person.name}>{person.name}</option>)}
+          {persons.map((person, index) => <option key={index} value={person.name}>{person.name}</option>)}
         </select>
       </label>
 
       <label>
         Priority:
         <select name="priority">
-          {priorities.map((priority) => <option value={priority}>{priority}</option>)}
+          {priorities.map((priority, index) => <option key={index} value={priority}>{priority}</option>)}
         </select>
       </label>
 
