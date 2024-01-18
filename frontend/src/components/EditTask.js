@@ -21,8 +21,6 @@ function EditTask(props) {
       <label forhtml="name">Name</label>
       <input id="name" name="name" value="task 1" />
 
-      {/* { id: 1, name: 'task 1', deadline: new Date(), assigned: 'Mike', priority: 1 }, */}
-
       <label forhtml="deadline">Deadline</label>
       <input id="deadline" type="date" value="2023-02-02" />
 
