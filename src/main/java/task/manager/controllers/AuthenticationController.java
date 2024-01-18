@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import task.manager.utils.StringUtils;
 
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,5 +24,15 @@ public class AuthenticationController {
             return new ResponseEntity<>(OK);
         }
         return new ResponseEntity<>(UNAUTHORIZED);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        String email = registerRequest.getEmail();
+        String password = registerRequest.getPassword();
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(password)) {
+            return new ResponseEntity<>(UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(CREATED);
     }
 }

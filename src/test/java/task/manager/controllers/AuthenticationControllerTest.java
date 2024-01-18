@@ -74,7 +74,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void shouldReturn401WhenCredentialsIncorrect() throws Exception {
+    public void shouldReturn401WhenLoginCredentialsNotExist() throws Exception {
         // given
         LoginRequest loginRequest = new LoginRequest("wrong", "wrong");
 
@@ -86,7 +86,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    public void shouldReturn200WhenCredentialsCorrect() throws Exception {
+    public void shouldReturn200WhenLoginCredentialsExist() throws Exception {
         // given
         LoginRequest loginRequest = new LoginRequest("admin", "admin");
 
@@ -96,4 +96,73 @@ public class AuthenticationControllerTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void shouldReturn400WhenMissingRegisterRequestObject() throws Exception {
+        // when & then
+        mvc.perform(post("/auth/register"))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    public void shouldReturn401WhenRegisterRequestParameterEmailIsNull() throws Exception {
+        // given
+        RegisterRequest registerRequest = new RegisterRequest(null, "password");
+
+        // when & then
+        mvc.perform(post("/auth/register")
+                        .content(new ObjectMapper().writeValueAsString(registerRequest))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn401WhenRegisterRequestParameterPasswordIsNull() throws Exception {
+        // given
+        RegisterRequest registerRequest = new RegisterRequest("email", null);
+
+        // when & then
+        mvc.perform(post("/auth/register")
+                        .content(new ObjectMapper().writeValueAsString(registerRequest))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn401WhenRegisterRequestParameterEmailIsEmpty() throws Exception {
+        // given
+        RegisterRequest registerRequest = new RegisterRequest("", "password");
+
+        // when & then
+        mvc.perform(post("/auth/register")
+                        .content(new ObjectMapper().writeValueAsString(registerRequest))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn401WhenRegisterRequestParameterPasswordIsEmpty() throws Exception {
+        // given
+        RegisterRequest registerRequest = new RegisterRequest("email", "");
+
+        // when & then
+        mvc.perform(post("/auth/register")
+                        .content(new ObjectMapper().writeValueAsString(registerRequest))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturn401WhenRegisterCredentialsAreCorrect() throws Exception {
+        // given
+        RegisterRequest registerRequest = new RegisterRequest("email", "password");
+
+        // when & then
+        mvc.perform(post("/auth/register")
+                        .content(new ObjectMapper().writeValueAsString(registerRequest))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isCreated());
+    }
+
 }
