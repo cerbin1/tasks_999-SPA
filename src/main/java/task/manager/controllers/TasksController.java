@@ -33,11 +33,11 @@ public class TasksController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable Long id) {
+    public ResponseEntity<?> getTaskBy(@PathVariable Long id) {
         Optional<Task> task = tasksRepository.findById(id);
         if (task.isEmpty()) {
             return new ResponseEntity<>(NOT_FOUND);
         }
-        return null;
+        return new ResponseEntity<>(task.get(), OK);
     }
 }

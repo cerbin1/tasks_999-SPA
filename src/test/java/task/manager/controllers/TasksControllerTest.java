@@ -14,6 +14,7 @@ import task.manager.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
@@ -60,6 +61,22 @@ public class TasksControllerTest {
         // when & then
         mvc.perform(get("/tasks/123"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldReturnTaskById() throws Exception {
+        // given
+        when(tasksRepository.findById(1L))
+                .thenReturn(Optional.of(new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), new User(), new Priority())));
+
+        // when & then
+        mvc.perform(get("/tasks/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("Mike")))
+                .andExpect(jsonPath("$.deadline", is("2024-01-01T15:15:00")))
+                .andExpect(jsonPath("$.assignee", Matchers.anEmptyMap()))
+                .andExpect(jsonPath("$.priority", Matchers.anEmptyMap()));
     }
 
 }
