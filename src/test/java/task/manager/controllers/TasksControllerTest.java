@@ -54,4 +54,12 @@ public class TasksControllerTest {
                 .andExpect(jsonPath("$[1].assignee", Matchers.anEmptyMap()))
                 .andExpect(jsonPath("$[1].priority", Matchers.anEmptyMap()));
     }
+
+    @Test
+    public void shouldReturn400WhenTaskWithGivenIdNotFound() throws Exception {
+        // when & then
+        mvc.perform(get("/tasks/123"))
+                .andExpect(status().isNotFound());
+    }
+
 }
