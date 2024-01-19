@@ -14,18 +14,18 @@ import Layout from './components/Layout'
 function App() {
   return (
     <div className="App">
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<MainPage />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="list" element={<Tasks />} />
-          <Route path="create" element={<CreateTask />} />
-          <Route path="edit" element={<EditTask />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<MainPage />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="list" element={<Tasks />} />
+            <Route path="create" element={<CreateTask />} />
+            <Route path="edit" element={<EditTask />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

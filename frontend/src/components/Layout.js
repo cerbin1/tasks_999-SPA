@@ -4,26 +4,24 @@ const Layout = () => {
   return (
     <>
       <nav>
-        <ul>
-          <li>
-            <Link to="/">Main Page</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/list">List tasks</Link>
-          </li>
-          <li>
-            <Link to="/create">Create task</Link>
-          </li>
-          <li>
-            <Link to="/edit">Edit task</Link>
-          </li>
-        </ul>
+        <p>
+          <Link to="/">Main Page</Link>
+        </p>
+        <p>
+          <Link to="/login">Login</Link>
+        </p>
+        <p>
+          <Link to="/register">Register</Link>
+        </p>
+        <p>
+          <Link to="/list">List tasks</Link>
+        </p>
+        <p>
+          <Link to="/create">Create task</Link>
+        </p>
+        <p>
+          <Link to="/edit">Edit task</Link>
+        </p>
       </nav>
 
       <Outlet />
