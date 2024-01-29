@@ -1,8 +1,10 @@
 package task.manager.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity(name = "users")
+@Getter
 public class User {
     @Id
     @Column
