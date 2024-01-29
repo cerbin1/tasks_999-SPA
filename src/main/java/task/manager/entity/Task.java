@@ -3,11 +3,13 @@ package task.manager.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "tasks")
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class Task {
     @Id
@@ -22,7 +24,7 @@ public class Task {
     private LocalDateTime deadline;
 
     @OneToOne
-    @JoinColumn(name = "ASSIGNEE_ID", nullable = false)
+    @JoinColumn(name = "ASSIGNEE_ID", nullable = false, unique = false)
     private User assignee;
 
     @OneToOne
