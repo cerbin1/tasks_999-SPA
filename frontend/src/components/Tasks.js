@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
+
 
 function Tasks(props) {
   const [data, setData] = useState([])
@@ -32,6 +34,10 @@ function Tasks(props) {
       <td>{task.deadline.toString()}</td>
       <td>{task.assignee.name}</td>
       <td>{task.priority.value}</td>
+      <td>
+        {/* <button>asd        </button> */}
+        <Link to='/edit' state={{id: task.id}}>Edit</Link>
+      </td>
     </tr>
   );
 
