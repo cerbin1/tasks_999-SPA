@@ -10,7 +10,10 @@ function Tasks(props) {
   const apiUrl = 'http://localhost:8080/tasks';
 
   useEffect(() => {
+    loadTasks();
+  }, []);
 
+  function loadTasks() {
     fetch(apiUrl)
       .then(response => {
         if (!response.ok) {
@@ -20,12 +23,27 @@ function Tasks(props) {
         return response.json();
       })
       .then(data => {
-        setData(data)
+        setData(data);
+      })
+      .catch(error => {
+        alert(error);
+      });
+  }
+
+  function handleRemove(id) {
+    fetch(apiUrl + '/' + id, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        loadTasks();
       })
       .catch(error => {
         alert(error)
       });
-  }, []);
+  }
 
   const listOfElements = data.map((task) =>
     <tr key={task.id}>
@@ -36,6 +54,9 @@ function Tasks(props) {
       <td>{task.priority.value}</td>
       <td>
         <Link to='/edit' state={{ id: task.id }}>Edit</Link>
+      </td>
+      <td>
+        <button onClick={() => handleRemove(task.id)}>Remove</button>
       </td>
     </tr>
   );
