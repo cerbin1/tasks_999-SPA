@@ -36,13 +36,13 @@ function Tasks(props) {
       <td>{task.priority.value}</td>
       <td>
         {/* <button>asd        </button> */}
-        <Link to='/edit' state={{id: task.id}}>Edit</Link>
+        <Link to='/edit' state={{ id: task.id }}>Edit</Link>
       </td>
     </tr>
   );
 
   return <div>
-    <table>
+    <table style={{ marginLeft: "auto", marginRight: "auto" }}>
       <tbody>
         <tr>
           <th>Id</th>
