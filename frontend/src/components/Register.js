@@ -11,9 +11,15 @@ function Register(props) {
   return <div>
     <img src={logo} className="App-logo" alt="logo" />
     <form onSubmit={register}>
-      <input name="email" placeholder="Email" />
-      <input name="password" placeholder="Password" />
-      <button type="submit" >Register</button>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" />
+      </div>
+      <button type="submit" class="btn btn-primary">Register</button>
     </form>
   </div>
 }
