@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function EditTask(props) {
   const [task, setTask] = useState()
@@ -118,31 +118,46 @@ function EditTask(props) {
   return <div>
     {task &&
       <form onSubmit={updateTask}>
-        <label forhtml="name">Name</label>
-        <input id="name" name="name" value={task.name} onChange={handleChange} />
-
-        <label forhtml="deadline">Deadline</label>
-        <input id="deadline" type="datetime-local" value={task.deadline} onChange={handleChange} />
+        <div class="form-group row">
+          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" value={task.name} onChange={handleChange} />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="deadline" class="col-sm-2 col-form-label">Deadline</label>
+          <div class="col-sm-10">
+            <input class="form-control" id="deadline" type="datetime-local" value={task.deadline} onChange={handleChange} />
+          </div>
+        </div>
 
         {users &&
-          <label>
-            Assignee:
-            <select name="assignee" defaultValue={task.assignee.id} onChange={handleAssigneeChange}>
-              {users.map((user, index) => <option key={index} value={user.id}>{user.name}</option>)}
-            </select>
-          </label>
+          <div class="form-group row">
+            <label for="prority" class="col-sm-2 col-form-label">Assignee</label>
+            <div class="col-sm-10">
+              <select class="form-select" name="assignee" defaultValue={task.assignee.id} onChange={handleAssigneeChange}>
+                {users.map((user, index) => <option key={index} value={user.id}>{user.name}</option>)}
+              </select>
+            </div>
+          </div>
         }
 
         {priorities &&
-          <label>
-            Priority:
-            <select name="priority" defaultValue={task.priority.id} onChange={handlePriorityChange}>
-              {priorities.map((priority, index) => <option key={index} value={priority.id}>{priority.value}</option>)}
-            </select>
-          </label>
+          <div class="form-group row">
+            <label for="prority" class="col-sm-2 col-form-label">Priority</label>
+            <div class="col-sm-10">
+              <select class="form-select" name="priority" defaultValue={task.priority.id} onChange={handlePriorityChange}>
+                {priorities.map((priority, index) => <option key={index} value={priority.id}>{priority.value}</option>)}
+              </select>
+            </div>
+          </div>
         }
 
-        <button type="submit" >Update</button>
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Update</button>
+          </div>
+        </div>
       </form>
     }
   </div>
