@@ -35,7 +35,6 @@ function Tasks(props) {
       <td>{task.assignee.name}</td>
       <td>{task.priority.value}</td>
       <td>
-        {/* <button>asd        </button> */}
         <Link to='/edit' state={{ id: task.id }}>Edit</Link>
       </td>
     </tr>
