@@ -19,9 +19,6 @@ const Layout = () => {
         <p>
           <Link to="/create">Create task</Link>
         </p>
-        <p>
-          <Link to="/edit">Edit task</Link>
-        </p>
       </nav>
 
       <Outlet />
