@@ -47,7 +47,7 @@ function Tasks(props) {
 
   const listOfElements = data.map((task) =>
     <tr key={task.id}>
-      <td>{task.id}</td>
+      <th scope="row">{task.id}</th>
       <td>{task.name}</td>
       <td>{task.deadline.toString()}</td>
       <td>{task.assignee.name}</td>
@@ -56,22 +56,24 @@ function Tasks(props) {
         <Link to='/edit' state={{ id: task.id }}>Edit</Link>
       </td>
       <td>
-        <button onClick={() => handleRemove(task.id)}>Remove</button>
+        <button type="button" class="btn btn-danger" onClick={() => handleRemove(task.id)}>Remove</button>
       </td>
     </tr>
   );
 
   return <div>
-    <table style={{ marginLeft: "auto", marginRight: "auto" }}>
-      <tbody>
+    <table class="table">
+      <thead>
         <tr>
-          <th>Id</th>
-          <th>Name</th>
-          <th>Deadline</th>
-          <th>Assignee</th>
-          <th>Priority</th>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Deadline</th>
+          <th scope="col">Assignee</th>
+          <th scope="col">Priority</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Remove</th>
         </tr>
-      </tbody>
+      </thead>
       <tbody>
         {listOfElements}
       </tbody>
