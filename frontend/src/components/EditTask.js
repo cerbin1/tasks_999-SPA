@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function EditTask(props) {
   const [task, setTask] = useState()
@@ -10,6 +10,8 @@ function EditTask(props) {
 
   const location = useLocation()
   const { id } = location.state
+
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -60,7 +62,26 @@ function EditTask(props) {
 
   function updateTask(event) {
     event.preventDefault();
-    alert('updateTask')
+
+    fetch(apiUrl + 'tasks/' + task.id, {
+      method: 'PUT',
+      body: JSON.stringify(task),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        navigate('/list');
+      })
+      .catch(error => {
+        alert(error)
+      });
   }
 
   function handleChange(event) {
@@ -70,6 +91,29 @@ function EditTask(props) {
     })
   }
 
+  function handleAssigneeChange(event) {
+    const findAssignee = users.find((user) => {
+      return user.id == event.target.value
+    });
+    setTask(task => {
+      return {
+        ...task,
+        assignee: findAssignee
+      };
+    });
+  }
+
+  function handlePriorityChange(event) {
+    const findPriority = priorities.find((priority) => {
+      return priority.id == event.target.value
+    });
+    setTask(task => {
+      return {
+        ...task,
+        priority: findPriority
+      };
+    });
+  }
 
   return <div>
     {task &&
@@ -83,8 +127,8 @@ function EditTask(props) {
         {users &&
           <label>
             Assignee:
-            <select name="assignee" defaultValue={task.assignee.id}>
-              {users.map((user, index) => <option onChange={handleChange} key={index} value={user.id}>{user.name}</option>)}
+            <select name="assignee" defaultValue={task.assignee.id} onChange={handleAssigneeChange}>
+              {users.map((user, index) => <option key={index} value={user.id}>{user.name}</option>)}
             </select>
           </label>
         }
@@ -92,8 +136,8 @@ function EditTask(props) {
         {priorities &&
           <label>
             Priority:
-            <select name="priority" defaultValue={task.priority.id}>
-              {priorities.map((priority, index) => <option onChange={handleChange} key={index} value={priority.id}>{priority.value}</option>)}
+            <select name="priority" defaultValue={task.priority.id} onChange={handlePriorityChange}>
+              {priorities.map((priority, index) => <option key={index} value={priority.id}>{priority.value}</option>)}
             </select>
           </label>
         }
