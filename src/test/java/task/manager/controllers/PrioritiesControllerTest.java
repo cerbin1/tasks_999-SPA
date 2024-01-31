@@ -44,7 +44,7 @@ public class PrioritiesControllerTest {
                 .andExpect(jsonPath("$[0].value", is("1")))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].value", is("2")))
-                .andExpect(jsonPath("$[2].id", is(2)))
+                .andExpect(jsonPath("$[2].id", is(3)))
                 .andExpect(jsonPath("$[2].value", is("3")));
     }
 }
