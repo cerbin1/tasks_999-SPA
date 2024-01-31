@@ -115,6 +115,10 @@ function EditTask(props) {
     });
   }
 
+  function handleCancelButton() {
+    navigate('/list');
+  }
+
   return <div>
     {task &&
       <form onSubmit={updateTask}>
@@ -155,6 +159,7 @@ function EditTask(props) {
 
         <div class="form-group row">
           <div class="col-sm-10">
+            <button type="button" class="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
             <button type="submit" class="btn btn-primary">Update</button>
           </div>
         </div>

@@ -96,6 +96,10 @@ function CreateTask(props) {
       });
   }
 
+  function handleCancelButton() {
+    navigate('/list');
+  }
+
   return <div>
     <form onSubmit={createTask}>
       <div class="form-group row">
@@ -135,6 +139,7 @@ function CreateTask(props) {
 
       <div class="form-group row">
         <div class="col-sm-10">
+          <button type="button" class="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
           <button type="submit" class="btn btn-primary">Create Task</button>
         </div>
       </div>
