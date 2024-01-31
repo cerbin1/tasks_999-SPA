@@ -7,14 +7,18 @@ function Tasks(props) {
 
 
 
-  const apiUrl = 'http://localhost:8080/tasks';
+  const apiUrl = 'http://localhost:8080/api/tasks';
 
   useEffect(() => {
     loadTasks();
   }, []);
 
   function loadTasks() {
-    fetch(apiUrl)
+    fetch(apiUrl, {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

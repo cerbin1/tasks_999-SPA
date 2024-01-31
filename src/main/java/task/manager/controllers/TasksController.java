@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/api/tasks")
 public class TasksController {
 
     private final TasksRepository tasksRepository;

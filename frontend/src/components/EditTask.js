@@ -6,7 +6,7 @@ function EditTask(props) {
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
 
-  const apiUrl = 'http://localhost:8080/';
+  const apiUrl = 'http://localhost:8080/api/';
 
   const location = useLocation()
   const { id } = location.state

@@ -6,7 +6,7 @@ function CreateTask(props) {
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
 
-  const apiUrl = 'http://localhost:8080/';
+  const apiUrl = 'http://localhost:8080/api/';
 
   const navigate = useNavigate();
 
@@ -80,6 +80,7 @@ function CreateTask(props) {
       body: JSON.stringify(task),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
       }
     })
       .then(response => {
@@ -105,7 +106,7 @@ function CreateTask(props) {
       <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">Name</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="name" value={task.name} defaultValue={''} onChange={handleChange} />
+          <input type="text" class="form-control" id="name" value={task.name} onChange={handleChange} />
         </div>
       </div>
       <div class="form-group row">

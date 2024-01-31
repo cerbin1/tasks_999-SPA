@@ -2,18 +2,16 @@ package task.manager.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import task.manager.entity.Task;
-import task.manager.entity.TasksRepository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import task.manager.entity.User;
 import task.manager.entity.UsersRepository;
 
-import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UsersController {
 
     private final UsersRepository usersRepository;

@@ -11,7 +11,7 @@ import task.manager.entity.Priority;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/priorities")
+@RequestMapping("/api/priorities")
 public class PrioritiesController {
 
     private final PrioritiesRepository prioritiesRepository;
