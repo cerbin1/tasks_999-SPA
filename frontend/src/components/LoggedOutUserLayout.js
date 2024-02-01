@@ -11,13 +11,13 @@ const LoggedOutUserLayout = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <a className="nav-link" href="#"><Link to="/">Main Page</Link></a>
+              <Link className="nav-link" to="/">Main Page</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><Link to="/login">Login</Link></a>
+              <Link className="nav-link" to="/login">Login</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><Link to="/register">Register</Link></a>
+              <Link className="nav-link" to="/register">Register</Link>
             </li>
           </ul>
         </div>

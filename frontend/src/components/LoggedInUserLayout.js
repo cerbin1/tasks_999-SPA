@@ -20,13 +20,13 @@ const LoggedInUserLayout = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <a className="nav-link" href="#"><Link to="/">Main Page</Link></a>
+              <Link className="nav-link" to="/">Main Page</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><Link to="/list">List tasks</Link></a>
+              <Link className="nav-link" to="/list">List tasks</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#"><Link to="/create">Create task</Link></a>
+              <Link className="nav-link" to="/create">Create task</Link>
             </li>
             <button type="button" className="btn btn-warning" onClick={handleLogoutButton}>Logout</button>
           </ul>
