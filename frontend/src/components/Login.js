@@ -49,11 +49,11 @@ function Login(props) {
     <img src={logo} className="App-logo" alt="logo" />
     <form onSubmit={login}>
       <div className="form-group">
-        <label for="username">Username</label>
+        <label htmlFor="username">Username</label>
         <input className="form-control" id="username" value={user.username} placeholder="Enter username" onChange={handleChange} />
       </div>
       <div className="form-group">
-        <label for="password">Password</label>
+        <label htmlFor="password">Password</label>
         <input type="password" className="form-control" id="password" value={user.password} placeholder="Password" onChange={handleChange} />
       </div>
       <button type="submit" className="btn btn-primary">Login</button>

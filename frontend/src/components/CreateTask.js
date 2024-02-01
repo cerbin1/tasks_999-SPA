@@ -104,13 +104,13 @@ function CreateTask(props) {
   return <div>
     <form onSubmit={createTask}>
       <div className="form-group row">
-        <label for="name" className="col-sm-2 col-form-label">Name</label>
+        <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" id="name" value={task.name} onChange={handleChange} />
         </div>
       </div>
       <div className="form-group row">
-        <label for="deadline" className="col-sm-2 col-form-label">Deadline</label>
+        <label htmlFor="deadline" className="col-sm-2 col-form-label">Deadline</label>
         <div className="col-sm-10">
           <input className="form-control" id="deadline" type="datetime-local" value={task.deadline} onChange={handleChange} />
         </div>
@@ -118,7 +118,7 @@ function CreateTask(props) {
 
       {users &&
         <div className="form-group row">
-          <label for="prority" className="col-sm-2 col-form-label">Assignee</label>
+          <label htmlFor="prority" className="col-sm-2 col-form-label">Assignee</label>
           <div className="col-sm-10">
             <select className="form-select" name="assignee" onChange={handleAssigneeChange}>
               {users.map((user, index) => <option key={index} value={user.id}>{user.name}</option>)}
@@ -129,7 +129,7 @@ function CreateTask(props) {
 
       {priorities &&
         <div className="form-group row">
-          <label for="prority" className="col-sm-2 col-form-label">Priority</label>
+          <label htmlFor="prority" className="col-sm-2 col-form-label">Priority</label>
           <div className="col-sm-10">
             <select className="form-select" name="priority" onChange={handlePriorityChange}>
               {priorities.map((priority, index) => <option key={index} value={priority.id}>{priority.value}</option>)}

@@ -44,23 +44,23 @@ function Register(props) {
     <img src={logo} className="App-logo" alt="logo" />
     <form onSubmit={register}>
       <div className="form-group">
-        <label for="email">Email</label>
+        <label htmlFor="email">Email</label>
         <input type="email" className="form-control" id="email" value={user.email} placeholder="Enter email" onChange={handleChange} />
       </div>
       <div className="form-group">
-        <label for="username">Username</label>
+        <label htmlFor="username">Username</label>
         <input className="form-control" id="username" value={user.username} placeholder="Enter username" onChange={handleChange} />
       </div>
       <div className="form-group">
-        <label for="password">Password</label>
+        <label htmlFor="password">Password</label>
         <input type="password" className="form-control" id="password" value={user.password} placeholder="Password" onChange={handleChange} />
       </div>
       <div className="form-group">
-        <label for="name">Name</label>
+        <label htmlFor="name">Name</label>
         <input className="form-control" id="name" value={user.name} placeholder="Enter name" onChange={handleChange} />
       </div>
       <div className="form-group">
-        <label for="surname">Surname</label>
+        <label htmlFor="surname">Surname</label>
         <input className="form-control" id="surname" value={user.surname} placeholder="Enter surname" onChange={handleChange} />
       </div>
       <button type="submit" className="btn btn-primary">Register</button>
