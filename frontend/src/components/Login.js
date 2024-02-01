@@ -9,9 +9,6 @@ function Login(props) {
 
   const navigate = useNavigate()
 
-  function register(event) {
-  }
-
   function handleChange(event) {
     setUser({
       ...user,
@@ -36,7 +33,6 @@ function Login(props) {
         return response.json();
       })
       .then(data => {
-        console.log(data)
         localStorage.setItem("token", data.token);
         navigate('/list')
       })
