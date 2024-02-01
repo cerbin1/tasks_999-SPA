@@ -41,6 +41,12 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        if (loginRequest.getUsername() == null || loginRequest.getUsername().isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is required."));
+        }
+        if (loginRequest.getPassword() == null || loginRequest.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Password is required."));
+        }
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
