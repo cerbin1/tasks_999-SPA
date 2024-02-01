@@ -38,7 +38,7 @@ public class PrioritiesControllerTest {
                 );
 
         // when & then
-        mvc.perform(get("/priorities"))
+        mvc.perform(get("/api/priorities"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].value", is("1")))

@@ -40,7 +40,7 @@ public class UsersControllerTest {
                 );
 
         // when & then
-        mvc.perform(get("/users"))
+        mvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].username", is("msmith")))

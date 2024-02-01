@@ -46,7 +46,7 @@ public class TasksControllerTest {
                 );
 
         // when & then
-        mvc.perform(get("/tasks"))
+        mvc.perform(get("/api/tasks"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(0)))
                 .andExpect(jsonPath("$[0].name", is("Mike")))
@@ -74,7 +74,7 @@ public class TasksControllerTest {
                 .thenReturn(Optional.of(new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), null, null)));
 
         // when & then
-        mvc.perform(get("/tasks/1"))
+        mvc.perform(get("/api/tasks/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Mike")))
@@ -86,7 +86,7 @@ public class TasksControllerTest {
     @Test
     public void shouldReturn400WhenTaskToUpdateWithGivenIdNotFound() throws Exception {
         // when & then
-        mvc.perform(post("/tasks"))
+        mvc.perform(post("/api/tasks"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -96,7 +96,7 @@ public class TasksControllerTest {
         Task task = new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), new User(), new Priority());
 
         // when & then
-        mvc.perform(post("/tasks")
+        mvc.perform(post("/api/tasks")
                         .content(getObjectMapper().writeValueAsString(task))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isCreated());
@@ -110,14 +110,13 @@ public class TasksControllerTest {
                 .thenReturn(false);
 
         // when & then
-        mvc.perform(put("/tasks/123")
+        mvc.perform(put("/api/tasks/123")
                         .content(getObjectMapper().writeValueAsString(task))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    @WithUserDetails("email")
     public void shouldUpdateTask() throws Exception {
         // given
         Task task = new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), null, null);
@@ -128,7 +127,7 @@ public class TasksControllerTest {
                 .thenReturn(taskToUpdate);
 
         // when & then
-        mvc.perform(put("/tasks/1")
+        mvc.perform(put("/api/tasks/1")
                         .content(getObjectMapper().writeValueAsString(task))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -149,7 +148,7 @@ public class TasksControllerTest {
                 .thenReturn(Optional.of(task));
 
         // when & then
-        mvc.perform(delete("/tasks/1"))
+        mvc.perform(delete("/api/tasks/1"))
                 .andExpect(status().isOk());
     }
 
@@ -162,7 +161,7 @@ public class TasksControllerTest {
                 .thenReturn(Optional.empty());
 
         // when & then
-        mvc.perform(delete("/tasks/1"))
+        mvc.perform(delete("/api/tasks/1"))
                 .andExpect(status().isBadRequest());
     }
 
@@ -173,7 +172,7 @@ public class TasksControllerTest {
                 .thenReturn(false);
 
         // when & then
-        mvc.perform(delete("/tasks/1"))
+        mvc.perform(delete("/api/tasks/1"))
                 .andExpect(status().isNotFound());
     }
 }
