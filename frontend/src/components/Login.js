@@ -37,7 +37,7 @@ function Login(props) {
       })
       .then(data => {
         console.log(data)
-        localStorage.setItem("token", data.accessToken);
+        localStorage.setItem("token", data.token);
         navigate('/list')
       })
       .catch(error => {
