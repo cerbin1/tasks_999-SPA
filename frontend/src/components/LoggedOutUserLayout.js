@@ -1,6 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 
-const Layout = () => {
+const LoggedOutUserLayout = () => {
   return (
     <>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -19,12 +19,6 @@ const Layout = () => {
             <li class="nav-item">
               <a class="nav-link" href="#"><Link to="/register">Register</Link></a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><Link to="/list">List tasks</Link></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><Link to="/create">Create task</Link></a>
-            </li>
           </ul>
         </div>
       </nav>
@@ -34,4 +28,4 @@ const Layout = () => {
   )
 };
 
-export default Layout;
+export default LoggedOutUserLayout;
