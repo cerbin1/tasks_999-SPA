@@ -43,27 +43,27 @@ function Register(props) {
   return <div>
     <img src={logo} className="App-logo" alt="logo" />
     <form onSubmit={register}>
-      <div class="form-group">
+      <div className="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" value={user.email} placeholder="Enter email" onChange={handleChange} />
+        <input type="email" className="form-control" id="email" value={user.email} placeholder="Enter email" onChange={handleChange} />
       </div>
-      <div class="form-group">
+      <div className="form-group">
         <label for="username">Username</label>
-        <input class="form-control" id="username" value={user.username} placeholder="Enter username" onChange={handleChange} />
+        <input className="form-control" id="username" value={user.username} placeholder="Enter username" onChange={handleChange} />
       </div>
-      <div class="form-group">
+      <div className="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" value={user.password} placeholder="Password" onChange={handleChange} />
+        <input type="password" className="form-control" id="password" value={user.password} placeholder="Password" onChange={handleChange} />
       </div>
-      <div class="form-group">
+      <div className="form-group">
         <label for="name">Name</label>
-        <input class="form-control" id="name" value={user.name} placeholder="Enter name" onChange={handleChange} />
+        <input className="form-control" id="name" value={user.name} placeholder="Enter name" onChange={handleChange} />
       </div>
-      <div class="form-group">
+      <div className="form-group">
         <label for="surname">Surname</label>
-        <input class="form-control" id="surname" value={user.surname} placeholder="Enter surname" onChange={handleChange} />
+        <input className="form-control" id="surname" value={user.surname} placeholder="Enter surname" onChange={handleChange} />
       </div>
-      <button type="submit" class="btn btn-primary">Register</button>
+      <button type="submit" className="btn btn-primary">Register</button>
     </form>
   </div>
 }

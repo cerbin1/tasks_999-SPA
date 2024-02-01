@@ -57,16 +57,16 @@ function Tasks(props) {
       <td>{task.assignee.name}</td>
       <td>{task.priority.value}</td>
       <td>
-        <Link to='/edit' state={{ id: task.id }}>Edit</Link>
+        {/* <Link to='/edit' state={{ id: task.id }}>Edit</Link> */}
       </td>
       <td>
-        <button type="button" class="btn btn-danger" onClick={() => handleRemove(task.id)}>Remove</button>
+        <button type="button" className="btn btn-danger" onClick={() => handleRemove(task.id)}>Remove</button>
       </td>
     </tr>
   );
 
   return <div>
-    <table class="table">
+    <table className="table">
       <thead>
         <tr>
           <th scope="col">#</th>

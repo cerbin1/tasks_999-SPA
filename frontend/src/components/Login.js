@@ -48,15 +48,15 @@ function Login(props) {
   return <div>
     <img src={logo} className="App-logo" alt="logo" />
     <form onSubmit={login}>
-      <div class="form-group">
+      <div className="form-group">
         <label for="username">Username</label>
-        <input class="form-control" id="username" value={user.username} placeholder="Enter username" onChange={handleChange} />
+        <input className="form-control" id="username" value={user.username} placeholder="Enter username" onChange={handleChange} />
       </div>
-      <div class="form-group">
+      <div className="form-group">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" value={user.password} placeholder="Password" onChange={handleChange} />
+        <input type="password" className="form-control" id="password" value={user.password} placeholder="Password" onChange={handleChange} />
       </div>
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button type="submit" className="btn btn-primary">Login</button>
     </form>
   </div>
 }
