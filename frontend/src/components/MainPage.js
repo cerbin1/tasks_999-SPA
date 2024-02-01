@@ -21,7 +21,7 @@ function MainPage(props) {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoggedInUserLayout />} >
-            <Route path="list" component={<Tasks />} />
+            <Route path="list" element={<Tasks />} />
             <Route path="create" element={<CreateTask />} />
             <Route path="edit" element={<EditTask />} />
           </Route>
