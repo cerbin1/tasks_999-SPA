@@ -56,6 +56,16 @@ public class TasksController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTaskById(@PathVariable Long id, @RequestBody Task task) {
+        if (task.getName().isBlank()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Name is required."));
+        }
+        LocalDateTime deadline = task.getDeadline();
+        if (deadline == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline is required."));
+        }
+        if (deadline.isBefore(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline can have to be future time."));
+        }
         if (tasksRepository.existsById(id)) {
             Task taskUpdated = tasksRepository.save(task);
             return new ResponseEntity<>(taskUpdated, OK);

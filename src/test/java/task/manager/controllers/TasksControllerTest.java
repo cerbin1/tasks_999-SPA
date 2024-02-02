@@ -129,7 +129,7 @@ public class TasksControllerTest {
     }
 
     @Test
-    public void shouldReturn400WhenTaskDeadlineIsPastNow() throws Exception {
+    public void shouldReturn400WhenTaskDeadlineToCreateIsPastNow() throws Exception {
         // given
         Task task = new Task(1L, "name", LocalDate.of(2020, 1, 1).atStartOfDay(), new User(), new Priority());
 
@@ -144,7 +144,7 @@ public class TasksControllerTest {
     @Test
     public void shouldReturn400WhenThereIsNoTaskObjectInRequestWhenUpdatingTask() throws Exception {
         // given
-        Task task = new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), new User(), new Priority());
+        Task task = new Task(1L, "Mike", LocalDateTime.now().plusDays(1L), new User(), new Priority());
         when(tasksRepository.existsById(123L))
                 .thenReturn(false);
 
@@ -158,7 +158,7 @@ public class TasksControllerTest {
     @Test
     public void shouldUpdateTask() throws Exception {
         // given
-        Task task = new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), null, null);
+        Task task = new Task(1L, "Mike", LocalDateTime.now().plusDays(1L), null, null);
         Task taskToUpdate = new Task(1L, "John", LocalDateTime.of(2024, 1, 10, 10, 10), null, null);
         when(tasksRepository.existsById(1L))
                 .thenReturn(true);
@@ -175,6 +175,48 @@ public class TasksControllerTest {
                 .andExpect(jsonPath("$.deadline", is("2024-01-10T10:10:00")))
                 .andExpect(jsonPath("$.assignee").value(IsNull.nullValue()))
                 .andExpect(jsonPath("$.priority").value(IsNull.nullValue()));
+    }
+
+    @Test
+    public void shouldReturn400WhenTaskNameToUpdateIsEmpty() throws Exception {
+        // given
+        Task task = new Task(1L, "", LocalDateTime.of(2024, 1, 1, 15, 15), new User(), new Priority());
+        when(tasksRepository.existsById(1L)).thenReturn(true);
+
+        // when & then
+        mvc.perform(put("/api/tasks/1")
+                        .content(getObjectMapper().writeValueAsString(task))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Error: Name is required.")));
+    }
+
+    @Test
+    public void shouldReturn400WhenTaskDeadlineToUpdateIsNull() throws Exception {
+        // given
+        Task task = new Task(1L, "name", null, new User(), new Priority());
+        when(tasksRepository.existsById(1L)).thenReturn(true);
+
+        // when & then
+        mvc.perform(put("/api/tasks/1")
+                        .content(getObjectMapper().writeValueAsString(task))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Error: Deadline is required.")));
+    }
+
+    @Test
+    public void shouldReturn400WhenTaskDeadlineToUpdateIsPastNow() throws Exception {
+        // given
+        Task task = new Task(1L, "name", LocalDate.of(2020, 1, 1).atStartOfDay(), new User(), new Priority());
+        when(tasksRepository.existsById(1L)).thenReturn(true);
+
+        // when & then
+        mvc.perform(put("/api/tasks/1")
+                        .content(getObjectMapper().writeValueAsString(task))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Error: Deadline can have to be future time.")));
     }
 
     @Test
