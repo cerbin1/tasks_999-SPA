@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
+import task.manager.security.jwt.MessageResponse;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
@@ -38,6 +40,16 @@ public class TasksController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Task task) {
+        if (task.getName().isBlank()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Name is required."));
+        }
+        LocalDateTime deadline = task.getDeadline();
+        if (deadline == null) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline is required."));
+        }
+        if (deadline.isBefore(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline can have to be future time."));
+        }
         Task taskCreated = tasksRepository.save(task);
         return new ResponseEntity<>(taskCreated, CREATED);
     }

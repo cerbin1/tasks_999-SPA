@@ -24,7 +24,7 @@ public class Task {
     private LocalDateTime deadline;
 
     @OneToOne
-    @JoinColumn(name = "ASSIGNEE_ID", nullable = false, unique = false)
+    @JoinColumn(name = "ASSIGNEE_ID", nullable = false)
     private User assignee;
 
     @OneToOne

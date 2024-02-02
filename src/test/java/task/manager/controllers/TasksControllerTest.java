@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import task.manager.entity.Priority;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
 import task.manager.entity.User;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
@@ -93,13 +93,52 @@ public class TasksControllerTest {
     @Test
     public void shouldCreateTask() throws Exception {
         // given
-        Task task = new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), new User(), new Priority());
+        Task task = new Task(1L, "name", LocalDateTime.now().plusDays(1), new User(), new Priority());
 
         // when & then
         mvc.perform(post("/api/tasks")
                         .content(getObjectMapper().writeValueAsString(task))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void shouldReturn400WhenTaskNameToCreateIsEmpty() throws Exception {
+        // given
+        Task task = new Task(1L, "", LocalDateTime.of(2024, 1, 1, 15, 15), new User(), new Priority());
+
+        // when & then
+        mvc.perform(post("/api/tasks")
+                        .content(getObjectMapper().writeValueAsString(task))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Error: Name is required.")));
+    }
+
+    @Test
+    public void shouldReturn400WhenTaskDeadlineToCreateIsNull() throws Exception {
+        // given
+        Task task = new Task(1L, "name", null, new User(), new Priority());
+
+        // when & then
+        mvc.perform(post("/api/tasks")
+                        .content(getObjectMapper().writeValueAsString(task))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Error: Deadline is required.")));
+    }
+
+    @Test
+    public void shouldReturn400WhenTaskDeadlineIsPastNow() throws Exception {
+        // given
+        Task task = new Task(1L, "name", LocalDate.of(2020, 1, 1).atStartOfDay(), new User(), new Priority());
+
+        // when & then
+        mvc.perform(post("/api/tasks")
+                        .content(getObjectMapper().writeValueAsString(task))
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Error: Deadline can have to be future time.")));
     }
 
     @Test
