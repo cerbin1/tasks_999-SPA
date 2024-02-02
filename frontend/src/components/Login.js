@@ -47,6 +47,7 @@ function Login(props) {
         if (!response.ok) {
           throw new Error('Nie udało się zalogować.')
         }
+        return response.json();
       })
       .then(data => {
         localStorage.setItem("token", data.token);
