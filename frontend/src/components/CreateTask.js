@@ -5,6 +5,7 @@ function CreateTask(props) {
   const [task, setTask] = useState({ name: '', deadline: '' })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
+  const [errors, setErrors] = useState();
 
   const apiUrl = 'http://localhost:8080/api/';
 
@@ -72,8 +73,25 @@ function CreateTask(props) {
     });
   }
 
+  function validateValues() {
+    let errors = {};
+    if (task.name.length == 0) {
+      errors.name = true;
+    }
+    if (task.deadline.length == 0) {
+      errors.deadline = true;
+    }
+    return errors;
+  };
+
   function createTask(event) {
     event.preventDefault();
+
+    const errorValues = validateValues();
+    setErrors(errorValues)
+    if (Object.keys(errorValues).length !== 0) {
+      return;
+    }
 
     fetch(apiUrl + 'tasks', {
       method: 'POST',
@@ -107,12 +125,22 @@ function CreateTask(props) {
         <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" id="name" value={task.name} onChange={handleChange} />
+        {errors && errors.name &&
+          <div className="alert alert-danger" role="alert">
+            You must enter name before submitting.
+          </div>
+        }
         </div>
       </div>
       <div className="form-group row">
         <label htmlFor="deadline" className="col-sm-2 col-form-label">Deadline</label>
         <div className="col-sm-10">
           <input className="form-control" id="deadline" type="datetime-local" value={task.deadline} onChange={handleChange} />
+        {errors && errors.deadline &&
+          <div className="alert alert-danger" role="alert">
+            You must enter deadline before submitting.
+          </div>
+        }
         </div>
       </div>
 
