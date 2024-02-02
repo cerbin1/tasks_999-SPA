@@ -103,7 +103,7 @@ public class TasksControllerTest {
     }
 
     @Test
-    public void shouldReturn400WhenThereIsNoTaskObjectInRequestWhenCreatingTask() throws Exception {
+    public void shouldReturn400WhenThereIsNoTaskObjectInRequestWhenUpdatingTask() throws Exception {
         // given
         Task task = new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), new User(), new Priority());
         when(tasksRepository.existsById(123L))
