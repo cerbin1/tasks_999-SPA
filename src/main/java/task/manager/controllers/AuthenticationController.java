@@ -63,6 +63,22 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        if (registerRequest.getEmail() == null || registerRequest.getEmail().isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is required."));
+        }
+        if (registerRequest.getUsername() == null || registerRequest.getUsername().isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is required."));
+        }
+        if (registerRequest.getPassword() == null || registerRequest.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Password is required."));
+        }
+        if (registerRequest.getName() == null || registerRequest.getName().isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Name is required."));
+        }
+        if (registerRequest.getSurname() == null || registerRequest.getSurname().isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Surname is required."));
+        }
+
         if (usersRepository.existsByUsername(registerRequest.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
