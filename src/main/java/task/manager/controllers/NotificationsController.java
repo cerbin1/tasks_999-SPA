@@ -3,10 +3,12 @@ package task.manager.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.Notification;
 import task.manager.entity.NotificationsRepository;
 import task.manager.entity.UsersRepository;
+import task.manager.security.UserDetailsImpl;
 
 import java.util.Optional;
 
@@ -55,10 +57,13 @@ public class NotificationsController {
 
     @GetMapping("/count")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> getUserNotificationsCount(@RequestParam Long userId) {
-        if (usersRepository.existsById(userId)) {
+    public ResponseEntity<?> getUserNotificationsCount(@RequestParam Optional<Long> userId) {
+        Long userIdFinal = userId
+                .orElseGet(() -> ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+        // ??? is it ok or userId should be set somewhere in frontend
+        if (usersRepository.existsById(userIdFinal)) {
             int notificationsCount = notificationsRepository
-                    .findByUserId(userId)
+                    .findByUserId(userIdFinal)
                     .stream()
                     .filter(Notification::getRead)
                     .toList()
