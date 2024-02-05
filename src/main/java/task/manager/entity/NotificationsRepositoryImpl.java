@@ -21,4 +21,9 @@ public class NotificationsRepositoryImpl implements NotificationsRepositoryCusto
     public Boolean existByUserId(Long userId) {
         return notificationsRepository.findAll().stream().anyMatch(notification -> notification.getId().equals(userId));
     }
+
+    @Override
+    public void markNotificationAsRead(Notification notification) {
+        notification.setRead(true);
+    }
 }

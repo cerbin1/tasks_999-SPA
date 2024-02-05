@@ -3,15 +3,13 @@ package task.manager.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import task.manager.entity.Notification;
 import task.manager.entity.NotificationsRepository;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -33,5 +31,22 @@ public class NotificationsController {
         } else {
             return new ResponseEntity<>(NOT_FOUND);
         }
+    }
+
+    @PostMapping("/{notificationId}/read")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
+        Optional<Notification> maybeNotification = notificationsRepository.findById(notificationId);
+        if (maybeNotification.isEmpty()) {
+            return new ResponseEntity<>(NOT_FOUND);
+        }
+
+        Notification notification = maybeNotification.get();
+        Boolean alreadyReadNotification = notification.getRead();
+        if (alreadyReadNotification) {
+            return new ResponseEntity<>(BAD_REQUEST);
+        }
+        notificationsRepository.markNotificationAsRead(notification);
+        return new ResponseEntity<>(OK);
     }
 }

@@ -15,11 +15,13 @@ import task.manager.entity.User;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -96,5 +98,30 @@ public class NotificationsControllerTest {
         mvc.perform(get("/api/notifications?userId=1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
+    }
+
+    @Test
+    public void shouldReturn404WhenNotificationToSetAsReadNotExist() throws Exception {
+        // given
+        when(notificationsRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // when & then
+        mvc.perform(post("/api/notifications/1/read"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldReturn400WhenNotificationToSetAsReadIsAlreadyRead() throws Exception {
+        // given
+        when(notificationsRepository.findById(1L)).thenReturn(Optional.of(new Notification(1L,
+                "User assignment",
+                new User(1L, "username", "email", "password", "John", "Doe", Collections.emptySet()),
+                LocalDateTime.of(2024, 1, 1, 15, 15),
+                true,
+                null)));
+
+        // when & then
+        mvc.perform(post("/api/notifications/1/read"))
+                .andExpect(status().isBadRequest());
     }
 }
