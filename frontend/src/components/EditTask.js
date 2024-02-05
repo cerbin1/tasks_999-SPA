@@ -16,7 +16,11 @@ function EditTask(props) {
 
   useEffect(() => {
 
-    fetch(apiUrl + 'tasks/' + id)
+    fetch(apiUrl + 'tasks/' + id, {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -31,7 +35,11 @@ function EditTask(props) {
       });
 
 
-    fetch(apiUrl + 'users')
+    fetch(apiUrl + 'users', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -45,7 +53,11 @@ function EditTask(props) {
         alert(error)
       });
 
-    fetch(apiUrl + 'priorities')
+    fetch(apiUrl + 'priorities', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

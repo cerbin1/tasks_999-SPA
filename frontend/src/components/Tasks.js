@@ -37,6 +37,9 @@ function Tasks(props) {
   function handleRemove(id) {
     fetch(apiUrl + '/' + id, {
       method: 'DELETE',
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
     })
       .then(response => {
         if (!response.ok) {

@@ -28,6 +28,9 @@ const LoggedInUserLayout = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/create">Create task</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/admin">User list</Link>
+            </li>
             <button type="button" className="btn btn-warning" onClick={handleLogoutButton}>Logout</button>
           </ul>
         </div>

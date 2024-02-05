@@ -12,7 +12,11 @@ function CreateTask(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(apiUrl + 'users')
+    fetch(apiUrl + 'users', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -26,7 +30,11 @@ function CreateTask(props) {
         alert(error)
       });
 
-    fetch(apiUrl + 'priorities')
+    fetch(apiUrl + 'priorities', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
