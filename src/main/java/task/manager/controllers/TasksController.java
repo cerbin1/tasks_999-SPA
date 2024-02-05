@@ -2,6 +2,7 @@ package task.manager.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
@@ -30,6 +31,7 @@ public class TasksController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getTaskBy(@PathVariable Long id) {
         Optional<Task> task = tasksRepository.findById(id);
         if (task.isPresent()) {
@@ -39,6 +41,7 @@ public class TasksController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> create(@RequestBody Task task) {
         if (task.getName().isBlank()) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Name is required."));
@@ -55,6 +58,7 @@ public class TasksController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> updateTaskById(@PathVariable Long id, @RequestBody Task task) {
         if (task.getName().isBlank()) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Name is required."));
@@ -75,6 +79,7 @@ public class TasksController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteBy(@PathVariable Long id) {
         if (tasksRepository.existsById(id)) {
             Optional<Task> taskToDelete = tasksRepository.findById(id);
