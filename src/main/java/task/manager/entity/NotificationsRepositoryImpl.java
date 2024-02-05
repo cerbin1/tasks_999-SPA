@@ -1,6 +1,7 @@
 package task.manager.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 public class NotificationsRepositoryImpl implements NotificationsRepositoryCustom {
 
     @Autowired
+    @Lazy
     private NotificationsRepository notificationsRepository;
 
     @Override
