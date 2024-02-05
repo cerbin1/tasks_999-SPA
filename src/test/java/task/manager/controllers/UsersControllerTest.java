@@ -13,17 +13,19 @@ import task.manager.entity.User;
 import task.manager.entity.UsersRepository;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-@WithMockUser(roles = "admin")
+@WithMockUser(roles = "ADMIN")
 public class UsersControllerTest {
 
     @Autowired
@@ -58,5 +60,32 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$[1].name", is("John")))
                 .andExpect(jsonPath("$[1].surname", is("Locker")))
                 .andExpect(jsonPath("$[1].roles[0].name", is("ROLE_USER")));
+    }
+
+    @Test
+    public void shouldDeleteUser() throws Exception {
+        // given
+        User user = new User("username", "email","password", "name", "surname");
+        when(usersRepository.existsById(1L))
+                .thenReturn(true);
+        when(usersRepository.findById(1L))
+                .thenReturn(Optional.of(user));
+
+        // when & then
+        mvc.perform(delete("/api/users/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturn400WhenTryingDeleteNotExistingUser() throws Exception {
+        // given
+        when(usersRepository.existsById(1L))
+                .thenReturn(true);
+        when(usersRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        // when & then
+        mvc.perform(delete("/api/users/1"))
+                .andExpect(status().isBadRequest());
     }
 }

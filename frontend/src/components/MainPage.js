@@ -8,6 +8,7 @@ import CreateTask from './CreateTask'
 import EditTask from './EditTask'
 import LoggedInUserLayout from './LoggedInUserLayout'
 import LoggedOutUserLayout from './LoggedOutUserLayout'
+import AdminPanelUserList from './AdminPanelUserList'
 
 export const UserContext = React.createContext(null);
 
@@ -24,6 +25,7 @@ function MainPage(props) {
             <Route path="list" element={<Tasks />} />
             <Route path="create" element={<CreateTask />} />
             <Route path="edit" element={<EditTask />} />
+            <Route path="admin" element={<AdminPanelUserList />} />
           </Route>
         </Routes>
       </BrowserRouter>
