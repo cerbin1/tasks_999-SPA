@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import task.manager.entity.Notification;
 import task.manager.entity.NotificationsRepository;
 import task.manager.entity.User;
+import task.manager.entity.UsersRepository;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -34,6 +35,9 @@ public class NotificationsControllerTest {
 
     @MockBean
     private NotificationsRepository notificationsRepository;
+
+    @MockBean
+    private UsersRepository usersRepository;
 
     @Test
     public void shouldReturn400WhenUserWithIdNotExists() throws Exception {
@@ -124,4 +128,33 @@ public class NotificationsControllerTest {
         mvc.perform(post("/api/notifications/1/read"))
                 .andExpect(status().isBadRequest());
     }
+
+
+    @Test
+    public void shouldReturnNumberOfUnreadNotifications() throws Exception {
+        // given
+        when(usersRepository.existsById(1L))
+                .thenReturn(true);
+        Notification notification = new Notification();
+        notification.setRead(true);
+        when(notificationsRepository.findByUserId(1L))
+                .thenReturn(Arrays.asList(notification, notification, notification, notification));
+
+
+        // when & then
+        mvc.perform(get("/api/notifications/count?userId=1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("4"));
+    }
+
+    @Test
+    public void shouldReturn404WhenUserNotExistWhenGettingNotificationsCount() throws Exception {
+        // given
+        when(usersRepository.existsById(1L)).thenReturn(false);
+
+        // when & then
+        mvc.perform(get("/api/notifications/count?userId=1"))
+                .andExpect(status().isNotFound());
+    }
+
 }

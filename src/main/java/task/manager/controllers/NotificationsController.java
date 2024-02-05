@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.Notification;
 import task.manager.entity.NotificationsRepository;
+import task.manager.entity.UsersRepository;
 
 import java.util.Optional;
 
@@ -16,10 +17,12 @@ import static org.springframework.http.HttpStatus.*;
 public class NotificationsController {
 
     private final NotificationsRepository notificationsRepository;
+    private final UsersRepository usersRepository;
 
     @Autowired
-    public NotificationsController(NotificationsRepository notificationsRepository) {
+    public NotificationsController(NotificationsRepository notificationsRepository, UsersRepository usersRepository) {
         this.notificationsRepository = notificationsRepository;
+        this.usersRepository = usersRepository;
     }
 
     @GetMapping
@@ -48,5 +51,21 @@ public class NotificationsController {
         }
         notificationsRepository.markNotificationAsRead(notification);
         return new ResponseEntity<>(OK);
+    }
+
+    @GetMapping("/count")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getUserNotificationsCount(@RequestParam Long userId) {
+        if (usersRepository.existsById(userId)) {
+            int notificationsCount = notificationsRepository
+                    .findByUserId(userId)
+                    .stream()
+                    .filter(Notification::getRead)
+                    .toList()
+                    .size();
+            return new ResponseEntity<>(notificationsCount, OK);
+        } else {
+            return new ResponseEntity<>(NOT_FOUND);
+        }
     }
 }
