@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-@WithMockUser(roles = "ADMIN")
 public class UsersControllerTest {
 
     @Autowired
@@ -35,7 +34,8 @@ public class UsersControllerTest {
     private UsersRepository usersRepository;
 
     @Test
-    public void shouldGetListOfUsers() throws Exception {
+    @WithMockUser(roles = "ADMIN")
+    public void shouldGetListOfAllUsers() throws Exception {
         // given
         when(usersRepository.findAll())
                 .thenReturn(Arrays.asList(
@@ -44,7 +44,7 @@ public class UsersControllerTest {
                 );
 
         // when & then
-        mvc.perform(get("/api/users"))
+        mvc.perform(get("/api/users/admin"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].username", is("msmith")))
@@ -61,8 +61,29 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$[1].surname", is("Locker")))
                 .andExpect(jsonPath("$[1].roles[0].name", is("ROLE_USER")));
     }
+    @Test
+    @WithMockUser(roles = "USER")
+    public void shouldGetListOfUsersToCreateTask() throws Exception {
+        // given
+        when(usersRepository.findAll())
+                .thenReturn(Arrays.asList(
+                        new User(1L, "msmith", "mike@smith.com", "password", "Mike", "Smith", Set.of(new Role(RoleName.ROLE_USER))),
+                        new User(2L, "jlocker", "john@locker.com", "password", "John", "Locker", Set.of(new Role(RoleName.ROLE_USER))))
+                );
+
+        // when & then
+        mvc.perform(get("/api/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("Mike")))
+                .andExpect(jsonPath("$[0].surname", is("Smith")))
+                .andExpect(jsonPath("$[1].id", is(2)))
+                .andExpect(jsonPath("$[1].name", is("John")))
+                .andExpect(jsonPath("$[1].surname", is("Locker")));
+    }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void shouldDeleteUser() throws Exception {
         // given
         User user = new User("username", "email","password", "name", "surname");
@@ -77,6 +98,7 @@ public class UsersControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     public void shouldReturn400WhenTryingDeleteNotExistingUser() throws Exception {
         // given
         when(usersRepository.existsById(1L))

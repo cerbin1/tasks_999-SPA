@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import task.manager.entity.User;
 import task.manager.entity.UsersRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
@@ -22,11 +24,22 @@ public class UsersController {
         this.usersRepository = usersRepository;
     }
 
-    @GetMapping
+    @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getAllTasks() {
+    public ResponseEntity<?> getAllUsers() {
         Iterable<User> allUsers = usersRepository.findAll();
         return new ResponseEntity<>(allUsers, OK);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getUsersForTask() {
+        Iterable<User> allUsers = usersRepository.findAll();
+        List<UserForTask> usersForTask = new ArrayList<>();
+        allUsers.forEach(user -> {
+            usersForTask.add(new UserForTask(user.getId(), user.getName(), user.getSurname()));
+        });
+        return new ResponseEntity<>(usersForTask, OK);
     }
 
     @DeleteMapping("/{id}")
@@ -41,5 +54,8 @@ public class UsersController {
             return new ResponseEntity<>(BAD_REQUEST);
         }
         return new ResponseEntity<>(NOT_FOUND);
+    }
+
+    record UserForTask(Long id, String name, String surname) {
     }
 }

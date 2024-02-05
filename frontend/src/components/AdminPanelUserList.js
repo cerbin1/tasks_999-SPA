@@ -14,7 +14,7 @@ function Tasks(props) {
   }, []);
 
   function loadUsers() {
-    fetch(apiUrl, {
+    fetch(apiUrl + '/admin', {
       headers: {
         "Authorization": `Bearer ` + localStorage.getItem('token'),
       }
