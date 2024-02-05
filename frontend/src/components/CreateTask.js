@@ -157,7 +157,7 @@ function CreateTask(props) {
           <label htmlFor="prority" className="col-sm-2 col-form-label">Assignee</label>
           <div className="col-sm-10">
             <select className="form-select" name="assignee" onChange={handleAssigneeChange}>
-              {users.map((user, index) => <option key={index} value={user.id}>{user.name}</option>)}
+              {users.map((user, index) => <option key={index} value={user.id}>{user.name} {user.surname}</option>)}
             </select>
           </div>
         </div>
