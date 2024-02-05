@@ -29,9 +29,12 @@ public class NotificationsController {
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> getNotificationsForUserId(@RequestParam Long userId) {
-        if (notificationsRepository.existByUserId(userId)) {
-            Iterable<Notification> allNotifications = notificationsRepository.findByUserId(userId);
+    public ResponseEntity<?> getNotificationsForUserId(@RequestParam Optional<Long> userId) {
+        Long userIdFinal = userId
+                .orElseGet(() -> ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+        // ??? is it ok or userId should be set somewhere in frontend
+        if (usersRepository.existsById(userIdFinal)) {
+            Iterable<Notification> allNotifications = notificationsRepository.findByUserId(userIdFinal);
             return new ResponseEntity<>(allNotifications, OK);
         } else {
             return new ResponseEntity<>(NOT_FOUND);

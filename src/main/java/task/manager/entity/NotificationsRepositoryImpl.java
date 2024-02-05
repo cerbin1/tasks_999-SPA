@@ -14,7 +14,7 @@ public class NotificationsRepositoryImpl implements NotificationsRepositoryCusto
 
     @Override
     public List<Notification> findByUserId(Long userId) {
-        return notificationsRepository.findAll().stream().filter(notification -> notification.getId().equals(userId)).collect(Collectors.toList());
+        return notificationsRepository.findAll().stream().filter(notification -> notification.getUser().getId().equals(userId)).collect(Collectors.toList());
     }
 
     @Override

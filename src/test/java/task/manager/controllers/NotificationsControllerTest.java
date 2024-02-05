@@ -53,7 +53,7 @@ public class NotificationsControllerTest {
     @Test
     public void shouldGetListOfNotificationsForSpecificUser() throws Exception {
         // given
-        when(notificationsRepository.existByUserId(1L)).thenReturn(true);
+        when(usersRepository.existsById(1L)).thenReturn(true);
 
         when(notificationsRepository.findByUserId(1L))
                 .thenReturn(Arrays.asList(
@@ -95,7 +95,7 @@ public class NotificationsControllerTest {
     @Test
     public void shouldReturn200WhenUserWithGivenIdHaveNoNotifications() throws Exception {
         // given
-        when(notificationsRepository.existByUserId(1L)).thenReturn(true);
+        when(usersRepository.existsById(1L)).thenReturn(true);
         when(notificationsRepository.findByUserId(1L)).thenReturn(emptyList());
 
         // when & then
