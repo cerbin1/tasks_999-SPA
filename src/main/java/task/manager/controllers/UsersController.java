@@ -36,9 +36,7 @@ public class UsersController {
     public ResponseEntity<?> getUsersForTask() {
         Iterable<User> allUsers = usersRepository.findAll();
         List<UserForTask> usersForTask = new ArrayList<>();
-        allUsers.forEach(user -> {
-            usersForTask.add(new UserForTask(user.getId(), user.getName(), user.getSurname()));
-        });
+        allUsers.forEach(user -> usersForTask.add(new UserForTask(user.getId(), user.getName(), user.getSurname())));
         return new ResponseEntity<>(usersForTask, OK);
     }
 
