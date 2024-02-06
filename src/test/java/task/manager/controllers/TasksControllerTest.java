@@ -9,10 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import task.manager.entity.Priority;
-import task.manager.entity.Task;
-import task.manager.entity.TasksRepository;
-import task.manager.entity.User;
+import task.manager.entity.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,6 +34,9 @@ public class TasksControllerTest {
 
     @MockBean
     private TasksRepository tasksRepository;
+
+    @MockBean
+    private NotificationsRepository notificationsRepository;
 
     @Test
     public void shouldGetListOfTasks() throws Exception {

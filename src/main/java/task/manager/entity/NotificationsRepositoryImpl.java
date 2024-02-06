@@ -29,4 +29,10 @@ public class NotificationsRepositoryImpl implements NotificationsRepositoryCusto
         notification.setReadDate(LocalDateTime.now());
         notificationsRepository.save(notification);
     }
+
+    @Override
+    public void createForTask(Task task) {
+        Notification notification = new Notification("New Task", task.getAssignee(), LocalDateTime.now(), false, null);
+        notificationsRepository.save(notification);
+    }
 }

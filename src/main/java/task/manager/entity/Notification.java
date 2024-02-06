@@ -36,4 +36,12 @@ public class Notification {
     @Column
     @Setter
     private LocalDateTime readDate;
+
+    public Notification(String name, User user, LocalDateTime createDate, Boolean read, LocalDateTime readDate) {
+        this.name = name;
+        this.user = user;
+        this.createDate = createDate;
+        this.read = read;
+        this.readDate = readDate;
+    }
 }

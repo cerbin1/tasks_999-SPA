@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import task.manager.entity.NotificationsRepository;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
 import task.manager.security.jwt.MessageResponse;
@@ -18,10 +19,12 @@ import static org.springframework.http.HttpStatus.*;
 public class TasksController {
 
     private final TasksRepository tasksRepository;
+    private final NotificationsRepository notificationsRepository;
 
     @Autowired
-    public TasksController(TasksRepository tasksRepository) {
+    public TasksController(TasksRepository tasksRepository, NotificationsRepository notificationsRepository) {
         this.tasksRepository = tasksRepository;
+        this.notificationsRepository = notificationsRepository;
     }
 
     @GetMapping
@@ -54,6 +57,7 @@ public class TasksController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline can have to be future time."));
         }
         Task taskCreated = tasksRepository.save(task);
+        notificationsRepository.createForTask(task);
         return new ResponseEntity<>(taskCreated, CREATED);
     }
 

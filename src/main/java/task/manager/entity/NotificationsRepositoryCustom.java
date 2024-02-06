@@ -9,4 +9,6 @@ public interface NotificationsRepositoryCustom {
     Boolean existByUserId(Long userId);
 
     void markNotificationAsRead(Notification notification);
+
+    void createForTask(Task task);
 }
