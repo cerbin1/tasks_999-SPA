@@ -32,7 +32,7 @@ public class NotificationsRepositoryImpl implements NotificationsRepositoryCusto
 
     @Override
     public void createForTask(Task task) {
-        Notification notification = new Notification("New Task", task.getAssignee(), LocalDateTime.now(), false, null);
+        Notification notification = new Notification("New Task", task.getName(), task.getAssignee(), LocalDateTime.now(), false, null);
         notificationsRepository.save(notification);
     }
 }

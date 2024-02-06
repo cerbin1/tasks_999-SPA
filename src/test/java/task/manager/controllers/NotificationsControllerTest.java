@@ -58,12 +58,14 @@ public class NotificationsControllerTest {
                 .thenReturn(Arrays.asList(
                         new Notification(1L,
                                 "User assignment",
+                                "Task name 1",
                                 new User(1L, "username", "email", "password", "John", "Doe", Collections.emptySet()),
                                 LocalDateTime.of(2024, 1, 1, 15, 15),
                                 false,
                                 null),
                         new Notification(2L,
                                 "User assignment",
+                                "Task name 2",
                                 new User(1L, "username", "email", "password", "John", "Doe", Collections.emptySet()),
                                 LocalDateTime.of(2024, 1, 1, 16, 5),
                                 true,
@@ -75,6 +77,7 @@ public class NotificationsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].name", is("User assignment")))
+                .andExpect(jsonPath("$[0].taskName", is("Task name 1")))
                 .andExpect(jsonPath("$[0].user.id", is(1)))
                 .andExpect(jsonPath("$[0].user.name", is("John")))
                 .andExpect(jsonPath("$[0].user.surname", is("Doe")))
@@ -83,6 +86,7 @@ public class NotificationsControllerTest {
                 .andExpect(jsonPath("$[0].readDate").value(IsNull.nullValue()))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].name", is("User assignment")))
+                .andExpect(jsonPath("$[1].taskName", is("Task name 2")))
                 .andExpect(jsonPath("$[1].user.id", is(1)))
                 .andExpect(jsonPath("$[1].user.name", is("John")))
                 .andExpect(jsonPath("$[1].user.surname", is("Doe")))
@@ -118,6 +122,7 @@ public class NotificationsControllerTest {
         // given
         when(notificationsRepository.findById(1L)).thenReturn(Optional.of(new Notification(1L,
                 "User assignment",
+                "Task name",
                 new User(1L, "username", "email", "password", "John", "Doe", Collections.emptySet()),
                 LocalDateTime.of(2024, 1, 1, 15, 15),
                 true,
@@ -161,6 +166,7 @@ public class NotificationsControllerTest {
         // given
         Notification notification = new Notification(1L,
                 "User assignment",
+                "Task name",
                 new User(),
                 LocalDateTime.of(2024, 1, 1, 15, 15),
                 true,

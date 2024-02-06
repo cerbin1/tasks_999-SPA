@@ -72,6 +72,7 @@ function Notifications(props) {
     <tr key={notification.id}>
       <th scope="row">{notification.id}</th>
       <td>{notification.name}</td>
+      <td>{notification.taskName}</td>
       <td>{notification.createDate.toString()}</td>
       <td>{notification.read ? "Yes" : <b>No</b>}</td>
       <td>{notification.readDate && notification.readDate.toString()}</td>
@@ -91,6 +92,7 @@ function Notifications(props) {
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
+          <th scope="col">Task name</th>
           <th scope="col">Create date</th>
           <th scope="col">Is read</th>
           <th scope="col">Read date</th>
