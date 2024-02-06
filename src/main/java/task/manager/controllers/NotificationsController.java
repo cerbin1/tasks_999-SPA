@@ -76,4 +76,18 @@ public class NotificationsController {
             return new ResponseEntity<>(NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> deleteBy(@PathVariable Long id) {
+        if (notificationsRepository.existsById(id)) {
+            Optional<Notification> notificationToDelete = notificationsRepository.findById(id);
+            if (notificationToDelete.isPresent()) {
+                notificationsRepository.delete(notificationToDelete.get());
+                return new ResponseEntity<>(OK);
+            }
+            return new ResponseEntity<>(BAD_REQUEST);
+        }
+        return new ResponseEntity<>(NOT_FOUND);
+    }
 }

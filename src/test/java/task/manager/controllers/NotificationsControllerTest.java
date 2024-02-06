@@ -21,8 +21,7 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -157,4 +156,45 @@ public class NotificationsControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void shouldDeleteNotification() throws Exception {
+        // given
+        Notification notification = new Notification(1L,
+                "User assignment",
+                new User(),
+                LocalDateTime.of(2024, 1, 1, 15, 15),
+                true,
+                null);
+        when(notificationsRepository.existsById(1L))
+                .thenReturn(true);
+        when(notificationsRepository.findById(1L))
+                .thenReturn(Optional.of(notification));
+
+        // when & then
+        mvc.perform(delete("/api/notifications/1"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    public void shouldReturn400WhenTryingDeleteNotExistingNotification() throws Exception {
+        // given
+        when(notificationsRepository.existsById(1L))
+                .thenReturn(true);
+        when(notificationsRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        // when & then
+        mvc.perform(delete("/api/notifications/1"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldReturn404WhenNotificationByIdToDeleteNotExists() throws Exception {
+        // given
+        when(notificationsRepository.existsById(1L))
+                .thenReturn(false);
+
+        // when & then
+        mvc.perform(delete("/api/notifications/1"))
+                .andExpect(status().isNotFound());
+    }
 }
