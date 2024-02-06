@@ -10,6 +10,8 @@ import task.manager.entity.TasksRepository;
 import task.manager.security.jwt.MessageResponse;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.*;
@@ -96,4 +98,14 @@ public class TasksController {
         return new ResponseEntity<>(NOT_FOUND);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<?> getTasksForSearch(@RequestParam String value) {
+        List<Task> foundTasks = new ArrayList<>();
+        tasksRepository.findAll().forEach(task -> {
+            if (task.getName().contains(value)) {
+                foundTasks.add(task);
+            }
+        });
+        return new ResponseEntity<>(foundTasks, OK);
+    }
 }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 function Tasks(props) {
   const [data, setData] = useState([])
+  const [search, setSearch] = useState()
 
 
 
@@ -52,6 +53,14 @@ function Tasks(props) {
       });
   }
 
+  function handleChange(event) {
+    setSearch(event.target.value)
+  }
+
+  function handleSearch() {
+
+  }
+
   const listOfElements = data.map((task) =>
     <tr key={task.id}>
       <th scope="row">{task.id}</th>
@@ -85,6 +94,8 @@ function Tasks(props) {
         {listOfElements}
       </tbody>
     </table>
+    <input type="text" className="form-control" id="name" value={search} onChange={handleChange} />
+    <button type="button" className="btn btn-primary" onClick={handleSearch}>Search by name</button>
   </div>
 }
 

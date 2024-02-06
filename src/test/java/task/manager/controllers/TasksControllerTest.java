@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -43,20 +44,20 @@ public class TasksControllerTest {
         // given
         when(tasksRepository.findAll())
                 .thenReturn(Arrays.asList(
-                        new Task(0L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), null, null),
-                        new Task(1L, "John", LocalDateTime.of(2024, 1, 15, 21, 30), null, null))
+                        new Task(0L, "Task 1", LocalDateTime.of(2024, 1, 1, 15, 15), null, null),
+                        new Task(1L, "Task 2", LocalDateTime.of(2024, 1, 15, 21, 30), null, null))
                 );
 
         // when & then
         mvc.perform(get("/api/tasks"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(0)))
-                .andExpect(jsonPath("$[0].name", is("Mike")))
+                .andExpect(jsonPath("$[0].name", is("Task 1")))
                 .andExpect(jsonPath("$[0].deadline", is("2024-01-01T15:15:00")))
                 .andExpect(jsonPath("$[0].assignee").value(IsNull.nullValue()))
                 .andExpect(jsonPath("$[0].priority").value(IsNull.nullValue()))
                 .andExpect(jsonPath("$[1].id", is(1)))
-                .andExpect(jsonPath("$[1].name", is("John")))
+                .andExpect(jsonPath("$[1].name", is("Task 2")))
                 .andExpect(jsonPath("$[1].deadline", is("2024-01-15T21:30:00")))
                 .andExpect(jsonPath("$[1].assignee").value(IsNull.nullValue()))
                 .andExpect(jsonPath("$[1].priority").value(IsNull.nullValue()));
@@ -73,13 +74,13 @@ public class TasksControllerTest {
     public void shouldReturnTaskById() throws Exception {
         // given
         when(tasksRepository.findById(1L))
-                .thenReturn(Optional.of(new Task(1L, "Mike", LocalDateTime.of(2024, 1, 1, 15, 15), null, null)));
+                .thenReturn(Optional.of(new Task(1L, "Task", LocalDateTime.of(2024, 1, 1, 15, 15), null, null)));
 
         // when & then
         mvc.perform(get("/api/tasks/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Mike")))
+                .andExpect(jsonPath("$.name", is("Task")))
                 .andExpect(jsonPath("$.deadline", is("2024-01-01T15:15:00")))
                 .andExpect(jsonPath("$.assignee").value(IsNull.nullValue()))
                 .andExpect(jsonPath("$.priority").value(IsNull.nullValue()));
@@ -257,5 +258,51 @@ public class TasksControllerTest {
         // when & then
         mvc.perform(delete("/api/tasks/1"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldReturnListOfTasksFromSearching() throws Exception {
+        // given
+        LocalDateTime deadline = LocalDateTime.of(2024, 1, 1, 15, 15);
+        when(tasksRepository.findAll())
+                .thenReturn(Arrays.asList(
+                        new Task(0L, "name", deadline, null, null),
+                        new Task(1L, "qq asd qwe dd", deadline, null, null),
+                        new Task(2L, "asd qwe Some name eee das", deadline, null, null),
+                        new Task(3L, "name 2", deadline, null, null))
+                );
+
+        // when & then
+        mvc.perform(get("/api/tasks/search?value=asd qwe"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("qq asd qwe dd")))
+                .andExpect(jsonPath("$[0].deadline", is("2024-01-01T15:15:00")))
+                .andExpect(jsonPath("$[0].assignee").value(IsNull.nullValue()))
+                .andExpect(jsonPath("$[0].priority").value(IsNull.nullValue()))
+                .andExpect(jsonPath("$[1].id", is(2)))
+                .andExpect(jsonPath("$[1].name", is("asd qwe Some name eee das")))
+                .andExpect(jsonPath("$[1].deadline", is("2024-01-01T15:15:00")))
+                .andExpect(jsonPath("$[1].assignee").value(IsNull.nullValue()))
+                .andExpect(jsonPath("$[1].priority").value(IsNull.nullValue()));
+    }
+
+    @Test
+    public void shouldReturnEmptyListOfWhenNoTasksFoundInSearching() throws Exception {
+        // given
+        LocalDateTime deadline = LocalDateTime.of(2024, 1, 1, 15, 15);
+        when(tasksRepository.findAll())
+                .thenReturn(Arrays.asList(
+                        new Task(0L, "name", deadline, null, null),
+                        new Task(1L, "name 2", deadline, null, null),
+                        new Task(2L, "name 3", deadline, null, null),
+                        new Task(3L, "name 4", deadline, null, null))
+                );
+
+        // when & then
+        mvc.perform(get("/api/tasks/search?value=asd"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 }
