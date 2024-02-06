@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function Tasks(props) {
   const [data, setData] = useState([])
-  const [search, setSearch] = useState()
+  const [search, setSearch] = useState('')
 
 
 
@@ -58,6 +58,24 @@ function Tasks(props) {
   }
 
   function handleSearch() {
+    fetch(apiUrl + '/search?value=' + search, {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setData(data);
+        console.log(data)
+      })
+      .catch(error => {
+        alert(error)
+      });
 
   }
 
@@ -78,22 +96,25 @@ function Tasks(props) {
   );
 
   return <div>
-    <table className="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Deadline</th>
-          <th scope="col">Assignee</th>
-          <th scope="col">Priority</th>
-          <th scope="col">Edit</th>
-          <th scope="col">Remove</th>
-        </tr>
-      </thead>
-      <tbody>
-        {listOfElements}
-      </tbody>
-    </table>
+    {listOfElements.length == 0 ? <span>No results</span> :
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">Assignee</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          {listOfElements}
+        </tbody>
+      </table>
+    }
+    <h1>Filter</h1>
     <input type="text" className="form-control" id="name" value={search} onChange={handleChange} />
     <button type="button" className="btn btn-primary" onClick={handleSearch}>Search by name</button>
   </div>
