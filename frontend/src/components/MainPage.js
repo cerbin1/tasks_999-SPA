@@ -9,6 +9,7 @@ import EditTask from './EditTask'
 import LoggedInUserLayout from './LoggedInUserLayout'
 import LoggedOutUserLayout from './LoggedOutUserLayout'
 import AdminPanelUserList from './AdminPanelUserList'
+import Notifications from './Notifications'
 
 export const UserContext = React.createContext(null);
 
@@ -26,6 +27,7 @@ function MainPage(props) {
             <Route path="create" element={<CreateTask />} />
             <Route path="edit" element={<EditTask />} />
             <Route path="admin" element={<AdminPanelUserList />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
         </Routes>
       </BrowserRouter>

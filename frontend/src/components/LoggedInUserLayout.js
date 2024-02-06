@@ -1,6 +1,11 @@
+import { useState, useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 
 const LoggedInUserLayout = () => {
+  const [notificationsCount, setNotificationsCount] = useState(0);
+
+  const apiUrl = 'http://localhost:8080/api/';
+
   const navigate = useNavigate()
 
   function handleLogoutButton(event) {
@@ -9,6 +14,28 @@ const LoggedInUserLayout = () => {
     localStorage.removeItem("token");
     navigate("/");
   }
+
+
+  useEffect(() => {
+    fetch(apiUrl + 'notifications/count?', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setNotificationsCount(data)
+      })
+      .catch(error => {
+        alert(error)
+      });
+
+  }, []);
 
   return (
     <>
@@ -27,6 +54,9 @@ const LoggedInUserLayout = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/create">Create task</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/notifications">Notifications ({notificationsCount})</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/admin">User list</Link>
