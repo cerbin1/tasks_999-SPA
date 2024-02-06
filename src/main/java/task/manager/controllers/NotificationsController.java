@@ -41,7 +41,7 @@ public class NotificationsController {
         }
     }
 
-    @PostMapping("/{notificationId}/read")
+    @PutMapping("/{notificationId}/read")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> markAsRead(@PathVariable Long notificationId) {
         Optional<Notification> maybeNotification = notificationsRepository.findById(notificationId);

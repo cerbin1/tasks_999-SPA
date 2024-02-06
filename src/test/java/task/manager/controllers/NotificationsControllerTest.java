@@ -109,7 +109,7 @@ public class NotificationsControllerTest {
         when(notificationsRepository.findById(1L)).thenReturn(Optional.empty());
 
         // when & then
-        mvc.perform(post("/api/notifications/1/read"))
+        mvc.perform(put("/api/notifications/1/read"))
                 .andExpect(status().isNotFound());
     }
 
@@ -124,7 +124,7 @@ public class NotificationsControllerTest {
                 null)));
 
         // when & then
-        mvc.perform(post("/api/notifications/1/read"))
+        mvc.perform(put("/api/notifications/1/read"))
                 .andExpect(status().isBadRequest());
     }
 
