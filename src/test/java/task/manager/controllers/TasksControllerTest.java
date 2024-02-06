@@ -51,6 +51,7 @@ public class TasksControllerTest {
         // when & then
         mvc.perform(get("/api/tasks"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(0)))
                 .andExpect(jsonPath("$[0].name", is("Task 1")))
                 .andExpect(jsonPath("$[0].deadline", is("2024-01-01T15:15:00")))

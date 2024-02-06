@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -46,12 +47,14 @@ public class UsersControllerTest {
         // when & then
         mvc.perform(get("/api/users/admin"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].username", is("msmith")))
                 .andExpect(jsonPath("$[0].email", is("mike@smith.com")))
                 .andExpect(jsonPath("$[0].password", is("password")))
                 .andExpect(jsonPath("$[0].name", is("Mike")))
                 .andExpect(jsonPath("$[0].surname", is("Smith")))
+                .andExpect(jsonPath("$[0].roles", hasSize(1)))
                 .andExpect(jsonPath("$[0].roles[0].name", is("ROLE_USER")))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].username", is("jlocker")))
@@ -59,6 +62,7 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$[1].password", is("password")))
                 .andExpect(jsonPath("$[1].name", is("John")))
                 .andExpect(jsonPath("$[1].surname", is("Locker")))
+                .andExpect(jsonPath("$[1].roles", hasSize(1)))
                 .andExpect(jsonPath("$[1].roles[0].name", is("ROLE_USER")));
     }
     @Test
@@ -74,6 +78,7 @@ public class UsersControllerTest {
         // when & then
         mvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].name", is("Mike")))
                 .andExpect(jsonPath("$[0].surname", is("Smith")))

@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -75,6 +76,7 @@ public class NotificationsControllerTest {
         // when & then
         mvc.perform(get("/api/notifications?userId=1"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].name", is("User assignment")))
                 .andExpect(jsonPath("$[0].taskName", is("Task name 1")))
