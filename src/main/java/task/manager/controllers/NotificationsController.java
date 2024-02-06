@@ -68,7 +68,7 @@ public class NotificationsController {
             int notificationsCount = notificationsRepository
                     .findByUserId(userIdFinal)
                     .stream()
-                    .filter(Notification::getRead)
+                    .filter(notification -> !notification.getRead())
                     .toList()
                     .size();
             return new ResponseEntity<>(notificationsCount, OK);

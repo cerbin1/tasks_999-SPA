@@ -135,7 +135,7 @@ public class NotificationsControllerTest {
         when(usersRepository.existsById(1L))
                 .thenReturn(true);
         Notification notification = new Notification();
-        notification.setRead(true);
+        notification.setRead(false);
         when(notificationsRepository.findByUserId(1L))
                 .thenReturn(Arrays.asList(notification, notification, notification, notification));
 
