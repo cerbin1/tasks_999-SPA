@@ -3,6 +3,7 @@ package task.manager.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,5 +26,7 @@ public class NotificationsRepositoryImpl implements NotificationsRepositoryCusto
     @Override
     public void markNotificationAsRead(Notification notification) {
         notification.setRead(true);
+        notification.setReadDate(LocalDateTime.now());
+        notificationsRepository.save(notification);
     }
 }

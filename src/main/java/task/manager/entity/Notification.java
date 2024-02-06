@@ -34,5 +34,6 @@ public class Notification {
     private Boolean read;
 
     @Column
+    @Setter
     private LocalDateTime readDate;
 }
