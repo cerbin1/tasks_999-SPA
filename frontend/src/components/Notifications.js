@@ -74,7 +74,7 @@ function Notifications(props) {
       <td>{notification.name}</td>
       <td>{notification.createDate.toString()}</td>
       <td>{notification.read ? "Yes" : "No"}</td>
-      <td>{notification.readDate.toString()}</td>
+      <td>{notification.readDate && notification.readDate.toString()}</td>
       <td>{notification.user.name} {notification.user.surname}</td>
       <td>
         <button type="button" className="btn btn-primary" onClick={() => handleMarkNotificationAsRead(notification.id)}>Read</button>
