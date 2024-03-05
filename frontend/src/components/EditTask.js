@@ -99,6 +99,7 @@ function EditTask(props) {
       body: JSON.stringify(task),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
       }
     })
       .then(response => {
@@ -168,9 +169,9 @@ function EditTask(props) {
           <label htmlFor="deadline" className="col-sm-2 col-form-label">Deadline</label>
           <div className="col-sm-10">
             <input className="form-control" id="deadline" type="datetime-local" value={task.deadline} onChange={handleChange} />
-            {errors && errors.name &&
+            {errors && errors.deadline &&
               <div className="alert alert-danger" role="alert">
-                You must enter name before submitting.
+                You must enter deadline before submitting.
               </div>
             }
           </div>
