@@ -78,7 +78,7 @@ function Notifications(props) {
       <td>{notification.readDate && notification.readDate.toString()}</td>
       <td>{notification.user.name} {notification.user.surname}</td>
       <td>
-        <button type="button" className="btn btn-primary" onClick={() => handleMarkNotificationAsRead(notification.id)}>Read</button>
+        <button type="button" className="btn btn-primary" disabled = {notification.read} onClick={() => handleMarkNotificationAsRead(notification.id)}>Read</button>
       </td>
       <td>
         <button type="button" className="btn btn-danger" onClick={() => handleRemove(notification.id)}>Remove</button>
