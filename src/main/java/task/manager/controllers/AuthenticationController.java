@@ -14,6 +14,7 @@ import task.manager.security.UserDetailsImpl;
 import task.manager.security.jwt.JwtResponse;
 import task.manager.security.jwt.JwtUtils;
 import task.manager.security.jwt.MessageResponse;
+import task.manager.service.UsersService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +31,9 @@ public class AuthenticationController {
 
     @Autowired
     UsersRepository usersRepository;
+
+    @Autowired
+    UsersService usersService;
 
     @Autowired
     RolesRepository rolesRepository;
@@ -117,7 +121,7 @@ public class AuthenticationController {
         }
 
         user.setRoles(roles);
-        usersRepository.save(user);
+        usersService.createUser(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
