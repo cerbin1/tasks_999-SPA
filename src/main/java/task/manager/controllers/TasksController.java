@@ -74,7 +74,7 @@ public class TasksController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline is required."));
         }
         if (deadline.isBefore(LocalDateTime.now())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline can have to be future time."));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline have to be future time."));
         }
         if (tasksRepository.existsById(id)) {
             Task taskUpdated = tasksRepository.save(task);
