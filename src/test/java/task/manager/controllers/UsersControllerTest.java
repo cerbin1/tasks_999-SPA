@@ -65,6 +65,7 @@ public class UsersControllerTest {
                 .andExpect(jsonPath("$[1].roles", hasSize(1)))
                 .andExpect(jsonPath("$[1].roles[0].name", is("ROLE_USER")));
     }
+
     @Test
     @WithMockUser(roles = "USER")
     public void shouldGetListOfUsersToCreateTask() throws Exception {
@@ -91,7 +92,7 @@ public class UsersControllerTest {
     @WithMockUser(roles = "ADMIN")
     public void shouldDeleteUser() throws Exception {
         // given
-        User user = new User("username", "email","password", "name", "surname");
+        User user = new User("username", "email", "password", "name", "surname");
         when(usersRepository.existsById(1L))
                 .thenReturn(true);
         when(usersRepository.findById(1L))

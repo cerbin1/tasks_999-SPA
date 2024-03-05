@@ -182,6 +182,7 @@ public class NotificationsControllerTest {
         mvc.perform(delete("/api/notifications/1"))
                 .andExpect(status().isOk());
     }
+
     @Test
     public void shouldReturn400WhenTryingDeleteNotExistingNotification() throws Exception {
         // given

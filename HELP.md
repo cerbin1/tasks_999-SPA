@@ -52,6 +52,7 @@ Documentation:
 Create API documentation for the back-end.
 
 ## Views
+
 - Registration
 - Login
 - Start Page
