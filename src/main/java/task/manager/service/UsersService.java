@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface UsersService {
 
-    UUID createUser (User user);
+    void createUser (User user);
 }

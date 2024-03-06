@@ -20,10 +20,8 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UUID createUser(User user) {
+    public void createUser(User user) {
         User savedUser = usersRepository.save(user);
-        userActivatorService.generateActivationLinkForUserId(savedUser.getId());
-
-        return UUID.randomUUID(); // todo remove
+        userActivatorService.generateActivationLinkFor(savedUser);
     }
 }

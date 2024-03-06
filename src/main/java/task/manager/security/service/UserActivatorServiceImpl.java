@@ -3,6 +3,7 @@ package task.manager.security.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import task.manager.entity.User;
 import task.manager.entity.UserActivationLink;
 import task.manager.entity.UserActivationLinksRepository;
 
@@ -22,9 +23,10 @@ public class UserActivatorServiceImpl implements UserActivatorService {
     }
 
     @Override
-    public void generateActivationLinkForUserId(Long userId) {
-        UserActivationLink userActivationLink = new UserActivationLink(userId);
+    public void generateActivationLinkFor(User user) {
+        UserActivationLink userActivationLink = new UserActivationLink(user.getId());
         userActivationLinksRepository.save(userActivationLink);
-        emailSendingService.sendEmail(applicationUrl + "activate/" + userActivationLink.getLinkId(), "TODO"); // TODO
+        String taskContent = applicationUrl + "accountActivate/" + userActivationLink.getLinkId();
+        emailSendingService.sendEmail(taskContent, user.getEmail());
     }
 }

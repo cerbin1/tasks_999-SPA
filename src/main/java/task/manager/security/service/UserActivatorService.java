@@ -1,7 +1,9 @@
 package task.manager.security.service;
 
+import task.manager.entity.User;
+
 public interface UserActivatorService {
 
-    void generateActivationLinkForUserId(Long userId);
+    void generateActivationLinkFor(User user);
 }
 

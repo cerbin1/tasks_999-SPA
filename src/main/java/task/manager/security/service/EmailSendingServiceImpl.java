@@ -11,11 +11,11 @@ import java.util.Properties;
 public class EmailSendingServiceImpl implements EmailSendingService {
 
     @Override
-    public boolean sendEmail(String todo, String emailReceiver) { // todo
-        String subject = "Subject\n\n";
-        String from = System.getenv("TASKS_MAIL_FROM");
-        String password = System.getenv("TASKS_MAIL_PWD");
-        return Mailer.send(from, password, emailReceiver, subject, todo);
+    public boolean sendEmail(String emailContent, String emailReceiver) {
+        String subject = "Task Application - activation link";
+        String senderEmail = System.getenv("TASKS_MAIL_SENDER");
+        String senderPassword = System.getenv("TASKS_MAIL_PWD");
+        return Mailer.send(senderEmail, senderPassword, emailReceiver, subject, emailContent);
     }
 
     static class Mailer {
