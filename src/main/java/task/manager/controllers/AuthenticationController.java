@@ -59,6 +59,11 @@ public class AuthenticationController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        if (!userDetails.isActive()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("User is not activated!"));
+        }
+
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 

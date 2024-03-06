@@ -45,7 +45,7 @@ function Login(props) {
     })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Nie udało się zalogować.')
+          throw new Error('There was a problem with login. Did you activate your account? (link was sent by email).')
         }
         return response.json();
       })
