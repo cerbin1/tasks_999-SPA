@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -20,6 +21,10 @@ public class UserActivationLink {
 
     @Column
     private Long userId;
+
+    @Column
+    @Setter
+    private boolean expired = false;
 
     public UserActivationLink(Long userId) {
         this.userId = userId;

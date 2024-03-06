@@ -7,6 +7,8 @@ import task.manager.entity.User;
 import task.manager.entity.UserActivationLink;
 import task.manager.entity.UserActivationLinksRepository;
 
+import java.util.UUID;
+
 @Service
 public class UserActivatorServiceImpl implements UserActivatorService {
     @Value("${application.url}")
@@ -26,7 +28,19 @@ public class UserActivatorServiceImpl implements UserActivatorService {
     public void generateActivationLinkFor(User user) {
         UserActivationLink userActivationLink = new UserActivationLink(user.getId());
         userActivationLinksRepository.save(userActivationLink);
-        String taskContent = applicationUrl + "accountActivate/" + userActivationLink.getLinkId();
+        String taskContent = applicationUrl + "auth/activate/" + userActivationLink.getLinkId();
         emailSendingService.sendEmail(taskContent, user.getEmail());
+    }
+
+    @Override
+    public UserActivationLink findByUuid(UUID uuid) {
+        return userActivationLinksRepository.findById(uuid).orElseThrow();
+    }
+
+    @Override
+    public boolean expire(UserActivationLink link) {
+        link.setExpired(true);
+        userActivationLinksRepository.save(link);
+        return true;
     }
 }

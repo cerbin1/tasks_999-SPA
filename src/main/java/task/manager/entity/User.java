@@ -34,6 +34,7 @@ public class User {
     private String surname;
 
     @Column
+    @Setter
     private Boolean active = false;
 
     @ManyToMany(fetch = FetchType.LAZY)

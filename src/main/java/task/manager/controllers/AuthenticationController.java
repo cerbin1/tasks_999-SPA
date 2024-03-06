@@ -19,6 +19,7 @@ import task.manager.service.UsersService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -129,5 +130,13 @@ public class AuthenticationController {
         usersService.createUser(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @GetMapping("/activate/{userLinkId}")
+    public ResponseEntity<String> activateUser(@PathVariable UUID userLinkId) {
+        if (usersService.activateUserBy(userLinkId)) {
+            return ResponseEntity.ok("User activated");
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -6,5 +6,7 @@ import java.util.UUID;
 
 public interface UsersService {
 
-    void createUser (User user);
+    void createUser(User user);
+
+    boolean activateUserBy(UUID userLinkId);
 }
