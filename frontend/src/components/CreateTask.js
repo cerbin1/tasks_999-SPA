@@ -154,7 +154,7 @@ function CreateTask(props) {
     })
   }
 
-  return <div>
+  return <div className='container'>
     <form onSubmit={createTask}>
       <div className="form-group row">
         <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
@@ -201,17 +201,22 @@ function CreateTask(props) {
         </div>
       }
 
+      {/* <div className="form-group row"> */}
       <h1>Subtasks</h1>
-      {task.subtasks.map((subtask, index) => {
-        return <div>
-          <input key={index} className="form-control" type="text" value={subtask.name} onChange={handleSubtaskChange.bind(this, index)} />
-          <button onClick={handleRemoveSubtaskButton}>asd</button>
+      <div className="d-flex align-items-center justify-content-center">
+        <div className="form-group col-md-3">
+          {task.subtasks.map((subtask, index) => {
+            return <div className="input-group sm-3">
+              <input key={index} className="form-control" type="text" style={{ textAlign: "center" }} value={subtask.name} onChange={handleSubtaskChange.bind(this, index)} />
+              <button type="submit" className="btn btn-danger" onClick={handleRemoveSubtaskButton}>Delete</button>
+            </div>
+          })}
         </div>
-      })}
+      </div>
 
 
       <div className="form-group row">
-        <div className="col-sm-10">
+        <div className='form-control'>
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
           <button type="button" className="btn btn-success" onClick={handleAddSubtaskButton}>Add subtask</button>
           <button type="submit" className="btn btn-primary">Create Task</button>
