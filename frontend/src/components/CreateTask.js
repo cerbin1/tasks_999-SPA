@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 function CreateTask(props) {
-  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: 'test' },] })
+  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{name: ''}] })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [errors, setErrors] = useState();
@@ -150,7 +150,7 @@ function CreateTask(props) {
   function handleAddSubtaskButton() {
     setTask({
       ...task,
-      subtasks: [...task.subtasks, { name: 'new value' }]
+      subtasks: [...task.subtasks, { name: '' }]
     })
   }
 
@@ -201,7 +201,6 @@ function CreateTask(props) {
         </div>
       }
 
-      {/* <div className="form-group row"> */}
       <h1>Subtasks</h1>
       <div className="d-flex align-items-center justify-content-center">
         <div className="form-group col-md-3">
