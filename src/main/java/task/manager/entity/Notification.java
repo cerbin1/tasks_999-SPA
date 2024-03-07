@@ -25,7 +25,7 @@ public class Notification {
     @Column
     private String taskName;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

@@ -23,11 +23,11 @@ public class Task {
     @Column
     private LocalDateTime deadline;
 
-    @OneToOne
-    @JoinColumn(name = "ASSIGNEE_ID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "ASSIGNEE_ID", referencedColumnName= "id")
     private User assignee;
 
-    @OneToOne
-    @JoinColumn(name = "PRIORITY_ID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "PRIORITY_ID", referencedColumnName= "id")
     private Priority priority;
 }
