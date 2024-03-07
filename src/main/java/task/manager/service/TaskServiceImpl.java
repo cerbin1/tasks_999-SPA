@@ -1,6 +1,7 @@
 package task.manager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import task.manager.entity.Subtask;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
@@ -8,6 +9,7 @@ import task.manager.entity.TasksRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TaskServiceImpl implements TaskService {
 
     private final TasksRepository tasksRepository;
