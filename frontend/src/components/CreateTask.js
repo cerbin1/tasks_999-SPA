@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 function CreateTask(props) {
-  const [task, setTask] = useState({ name: '', deadline: '' })
+  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: 'test' },] })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [errors, setErrors] = useState();
@@ -127,28 +127,55 @@ function CreateTask(props) {
     navigate('/list');
   }
 
+  function handleSubtaskChange(index, event) {
+    let subtasks = task.subtasks.slice();
+    subtasks[index].name = event.target.value;
+
+    setTask({
+      ...task,
+      subtasks: subtasks
+    })
+  }
+
+  function handleRemoveSubtaskButton(index, event) {
+    let subtasks = task.subtasks.slice();
+    subtasks.splice(index, 1)
+
+    setTask({
+      ...task,
+      subtasks: subtasks
+    })
+  }
+
+  function handleAddSubtaskButton() {
+    setTask({
+      ...task,
+      subtasks: [...task.subtasks, { name: 'new value' }]
+    })
+  }
+
   return <div>
     <form onSubmit={createTask}>
       <div className="form-group row">
         <label htmlFor="name" className="col-sm-2 col-form-label">Name</label>
         <div className="col-sm-10">
           <input type="text" className="form-control" id="name" value={task.name} onChange={handleChange} />
-        {errors && errors.name &&
-          <div className="alert alert-danger" role="alert">
-            You must enter name before submitting.
-          </div>
-        }
+          {errors && errors.name &&
+            <div className="alert alert-danger" role="alert">
+              You must enter name before submitting.
+            </div>
+          }
         </div>
       </div>
       <div className="form-group row">
         <label htmlFor="deadline" className="col-sm-2 col-form-label">Deadline</label>
         <div className="col-sm-10">
           <input className="form-control" id="deadline" type="datetime-local" value={task.deadline} onChange={handleChange} />
-        {errors && errors.deadline &&
-          <div className="alert alert-danger" role="alert">
-            You must enter deadline before submitting.
-          </div>
-        }
+          {errors && errors.deadline &&
+            <div className="alert alert-danger" role="alert">
+              You must enter deadline before submitting.
+            </div>
+          }
         </div>
       </div>
 
@@ -174,9 +201,19 @@ function CreateTask(props) {
         </div>
       }
 
+      <h1>Subtasks</h1>
+      {task.subtasks.map((subtask, index) => {
+        return <div>
+          <input key={index} className="form-control" type="text" value={subtask.name} onChange={handleSubtaskChange.bind(this, index)} />
+          <button onClick={handleRemoveSubtaskButton}>asd</button>
+        </div>
+      })}
+
+
       <div className="form-group row">
         <div className="col-sm-10">
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
+          <button type="button" className="btn btn-success" onClick={handleAddSubtaskButton}>Add subtask</button>
           <button type="submit" className="btn btn-primary">Create Task</button>
         </div>
       </div>

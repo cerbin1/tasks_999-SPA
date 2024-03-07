@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "tasks")
 @AllArgsConstructor
@@ -30,4 +31,8 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "PRIORITY_ID", referencedColumnName= "id")
     private Priority priority;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "task_id")
+    private List<Subtask> subtasks;
 }

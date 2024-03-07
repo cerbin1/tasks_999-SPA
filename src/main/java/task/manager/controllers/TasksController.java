@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.NotificationsRepository;
+import task.manager.entity.Subtask;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
 import task.manager.security.jwt.MessageResponse;
+import task.manager.service.TaskService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,11 +23,13 @@ import static org.springframework.http.HttpStatus.*;
 public class TasksController {
 
     private final TasksRepository tasksRepository;
+    private final TaskService taskService;
     private final NotificationsRepository notificationsRepository;
 
     @Autowired
-    public TasksController(TasksRepository tasksRepository, NotificationsRepository notificationsRepository) {
+    public TasksController(TasksRepository tasksRepository, TaskService taskService, NotificationsRepository notificationsRepository) {
         this.tasksRepository = tasksRepository;
+        this.taskService = taskService;
         this.notificationsRepository = notificationsRepository;
     }
 
@@ -58,8 +62,8 @@ public class TasksController {
         if (deadline.isBefore(LocalDateTime.now())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline can have to be future time."));
         }
-        Task taskCreated = tasksRepository.save(task);
-        notificationsRepository.createForTask(task);
+        Task taskCreated = taskService.createTaskWithSubtasks(task);
+        notificationsRepository.createForTask(taskCreated);
         return new ResponseEntity<>(taskCreated, CREATED);
     }
 
