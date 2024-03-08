@@ -86,6 +86,9 @@ function Tasks(props) {
       <td>{task.deadline.toString()}</td>
       <td>{task.assignee.name}</td>
       <td>{task.priority.value}</td>
+      <td>{task.subtasks.length}</td>
+      <td>{task.completed ? "Yes" : "No"}</td>
+      <td>{task.completeDate ? task.completeDate.toString() : ""}</td>
       <td>
         <Link to='/edit' state={{ id: task.id }}>Edit</Link>
       </td>
@@ -105,6 +108,9 @@ function Tasks(props) {
             <th scope="col">Deadline</th>
             <th scope="col">Assignee</th>
             <th scope="col">Priority</th>
+            <th scope="col">Subtasks Count</th>
+            <th scope="col">Is Completed</th>
+            <th scope="col">Complete date</th>
             <th scope="col">Edit</th>
             <th scope="col">Remove</th>
           </tr>
