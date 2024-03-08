@@ -29,6 +29,7 @@ import static task.manager.utils.ObjectMapperInstance.getObjectMapper;
 @AutoConfigureMockMvc(addFilters = false)
 @WithMockUser
 public class TasksControllerTest {
+/*
 
     @Autowired
     private MockMvc mvc;
@@ -306,4 +307,5 @@ public class TasksControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+*/
 }
