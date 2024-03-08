@@ -9,6 +9,7 @@ import task.manager.entity.Notification;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.UsersRepository;
 import task.manager.security.UserDetailsImpl;
+import task.manager.utils.AuthenticationUtils;
 
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public class NotificationsController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getNotificationsForUserId(@RequestParam Optional<Long> userId) {
         Long userIdFinal = userId
-                .orElseGet(() -> ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+                .orElseGet(AuthenticationUtils::getLoggedUserId);
         // ??? is it ok or userId should be set somewhere in frontend
         if (usersRepository.existsById(userIdFinal)) {
             Iterable<Notification> allNotifications = notificationsRepository.findByUserId(userIdFinal);
