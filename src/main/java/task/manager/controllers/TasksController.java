@@ -44,7 +44,7 @@ public class TasksController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getUserTasks() {
         Long loggedUserId = AuthenticationUtils.getLoggedUserId();
-        Iterable<Task> userTasks = taskService.getUserTasks(loggedUserId);
+        Iterable<Task> userTasks = taskService.getUserAssignedOrCreatedTasks(loggedUserId);
         return new ResponseEntity<>(userTasks, OK);
     }
 

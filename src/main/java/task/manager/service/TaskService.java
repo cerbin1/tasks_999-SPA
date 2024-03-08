@@ -10,5 +10,5 @@ public interface TaskService {
 
     Task updateTaskWithSubtasks(Task task);
 
-    List<Task> getUserTasks(Long userId);
+    List<Task> getUserAssignedOrCreatedTasks(Long userId);
 }

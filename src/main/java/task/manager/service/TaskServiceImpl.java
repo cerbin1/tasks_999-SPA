@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import task.manager.entity.Subtask;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
+import task.manager.entity.UsersRepository;
+import task.manager.utils.AuthenticationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +17,18 @@ import java.util.stream.StreamSupport;
 public class TaskServiceImpl implements TaskService {
 
     private final TasksRepository tasksRepository;
+    private final UsersRepository usersRepository;
 
     @Autowired
-    public TaskServiceImpl(TasksRepository tasksRepository) {
+    public TaskServiceImpl(TasksRepository tasksRepository, UsersRepository usersRepository) {
         this.tasksRepository = tasksRepository;
+        this.usersRepository = usersRepository;
     }
 
     @Override
     public Task createTaskWithSubtasks(Task task) {
+        Long loggedUserId = AuthenticationUtils.getLoggedUserId();
+        task.setCreator(usersRepository.findById(loggedUserId).orElseThrow());
         return saveTaskWithSubtasksInSequence(task);
     }
 
@@ -32,9 +38,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getUserTasks(Long userId) {
+    public List<Task> getUserAssignedOrCreatedTasks(Long userId) {
         return StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
-                .filter(task -> task.getAssignee().getId().equals(userId))
+                .filter(task -> task.getAssignee().getId().equals(userId) || task.getCreator().getId().equals(userId))
                 .collect(Collectors.toList());
     }
 
