@@ -34,12 +34,14 @@ public class TasksController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getAllTasks() {
         Iterable<Task> allTasks = tasksRepository.findAll();
         return new ResponseEntity<>(allTasks, OK);
     }
 
     @GetMapping("/userTasks")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getUserTasks() {
         Long loggedUserId = AuthenticationUtils.getLoggedUserId();
         Iterable<Task> userTasks = taskService.getUserTasks(loggedUserId);
@@ -110,6 +112,7 @@ public class TasksController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getTasksForSearch(@RequestParam String value) {
         List<Task> foundTasks = new ArrayList<>();
         tasksRepository.findAll().forEach(task -> {
