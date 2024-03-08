@@ -122,4 +122,20 @@ public class TasksController {
         });
         return new ResponseEntity<>(foundTasks, OK);
     }
+
+    @PutMapping("/markAsCompleted")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> markTaskAsCompleted(@RequestParam Long taskId) {
+        if (tasksRepository.existsById(taskId)) {
+            Optional<Task> maybeTask = tasksRepository.findById(taskId);
+            if (maybeTask.isPresent()) {
+                Task task = maybeTask.get();
+                task.markAsCompleted();
+                tasksRepository.save(task);
+                return new ResponseEntity<>(OK);
+            }
+            return new ResponseEntity<>(BAD_REQUEST);
+        }
+        return new ResponseEntity<>(NOT_FOUND);
+    }
 }

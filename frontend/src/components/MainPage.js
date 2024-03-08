@@ -29,6 +29,7 @@ function MainPage(props) {
             <Route path="create" element={<CreateTask />} />
             <Route path="myList" element={<MyTasks />} />
             <Route path="edit" element={<EditTask />} />
+            <Route path="details" element={<TaskDetails />} />
             <Route path="admin" element={<AdminPanelUserList />} />
             <Route path="notifications" element={<Notifications />} />
           </Route>

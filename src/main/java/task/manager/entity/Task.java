@@ -24,15 +24,26 @@ public class Task {
     @Column
     private LocalDateTime deadline;
 
+    @Column
+    private LocalDateTime completeDate;
+
+    @Column
+    private Boolean completed = false;
+
     @ManyToOne
-    @JoinColumn(name = "ASSIGNEE_ID", referencedColumnName= "id")
+    @JoinColumn(name = "ASSIGNEE_ID", referencedColumnName = "id")
     private User assignee;
 
     @ManyToOne
-    @JoinColumn(name = "PRIORITY_ID", referencedColumnName= "id")
+    @JoinColumn(name = "PRIORITY_ID", referencedColumnName = "id")
     private Priority priority;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "task_id")
     private List<Subtask> subtasks;
+
+    public void markAsCompleted() {
+        this.completed = true;
+        this.completeDate = LocalDateTime.now();
+    }
 }
