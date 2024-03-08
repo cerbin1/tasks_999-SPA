@@ -56,6 +56,9 @@ const LoggedInUserLayout = () => {
               <Link className="nav-link" to="/create">Create task</Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to="/myList">My tasks</Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/notifications">Notifications ({notificationsCount})</Link>
             </li>
             <li className="nav-item">

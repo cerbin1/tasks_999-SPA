@@ -4,8 +4,10 @@ import React, { useState } from 'react'
 import Login from './Login'
 import Register from './Register'
 import Tasks from './Tasks'
+import MyTasks from './MyTasks'
 import CreateTask from './CreateTask'
 import EditTask from './EditTask'
+import TaskDetails from './TaskDetails'
 import LoggedInUserLayout from './LoggedInUserLayout'
 import LoggedOutUserLayout from './LoggedOutUserLayout'
 import AdminPanelUserList from './AdminPanelUserList'
@@ -25,6 +27,7 @@ function MainPage(props) {
           <Route path="/" element={<LoggedInUserLayout />} >
             <Route path="list" element={<Tasks />} />
             <Route path="create" element={<CreateTask />} />
+            <Route path="myList" element={<MyTasks />} />
             <Route path="edit" element={<EditTask />} />
             <Route path="admin" element={<AdminPanelUserList />} />
             <Route path="notifications" element={<Notifications />} />

@@ -5,11 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.NotificationsRepository;
-import task.manager.entity.Subtask;
 import task.manager.entity.Task;
 import task.manager.entity.TasksRepository;
 import task.manager.security.jwt.MessageResponse;
 import task.manager.service.TaskService;
+import task.manager.utils.AuthenticationUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,6 +37,13 @@ public class TasksController {
     public ResponseEntity<?> getAllTasks() {
         Iterable<Task> allTasks = tasksRepository.findAll();
         return new ResponseEntity<>(allTasks, OK);
+    }
+
+    @GetMapping("/userTasks")
+    public ResponseEntity<?> getUserTasks() {
+        Long loggedUserId = AuthenticationUtils.getLoggedUserId();
+        Iterable<Task> userTasks = taskService.getUserTasks(loggedUserId);
+        return new ResponseEntity<>(userTasks, OK);
     }
 
     @GetMapping("/{id}")

@@ -8,6 +8,8 @@ import task.manager.entity.TasksRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -27,6 +29,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTaskWithSubtasks(Task task) {
         return saveTaskWithSubtasksInSequence(task);
+    }
+
+    @Override
+    public List<Task> getUserTasks(Long userId) {
+        return StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
+                .filter(task -> task.getAssignee().getId().equals(userId))
+                .collect(Collectors.toList());
     }
 
     private Task saveTaskWithSubtasksInSequence(Task task) {
