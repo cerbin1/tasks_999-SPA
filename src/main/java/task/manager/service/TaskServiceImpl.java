@@ -21,6 +21,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task createTaskWithSubtasks(Task task) {
+        return saveTaskWithSubtasksInSequence(task);
+    }
+
+    @Override
+    public Task updateTaskWithSubtasks(Task task) {
+        return saveTaskWithSubtasksInSequence(task);
+    }
+
+    private Task saveTaskWithSubtasksInSequence(Task task) {
         List<Subtask> subtasks = new ArrayList<>(task.getSubtasks());
 
         for (int i = 0; i < subtasks.size(); i++) {

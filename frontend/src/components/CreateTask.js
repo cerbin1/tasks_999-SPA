@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 function CreateTask(props) {
-  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{name: ''}] })
+  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: '' }] })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [errors, setErrors] = useState();
@@ -205,9 +205,9 @@ function CreateTask(props) {
       <div className="d-flex align-items-center justify-content-center">
         <div className="form-group col-md-3">
           {task.subtasks.map((subtask, index) => {
-            return <div className="input-group sm-3">
-              <input key={index} className="form-control" type="text" style={{ textAlign: "center" }} value={subtask.name} onChange={handleSubtaskChange.bind(this, index)} />
-              <button type="submit" className="btn btn-danger" onClick={handleRemoveSubtaskButton}>Delete</button>
+            return <div key={index} className="input-group sm-3">
+              <input className="form-control" type="text" style={{ textAlign: "center" }} value={subtask.name} onChange={handleSubtaskChange.bind(this, index)} />
+              <button type="button" className="btn btn-danger" onClick={handleRemoveSubtaskButton}>Delete</button>
             </div>
           })}
         </div>

@@ -151,7 +151,36 @@ function EditTask(props) {
     navigate('/list');
   }
 
-  return <div>
+
+  function handleSubtaskChange(index, event) {
+    let subtasks = task.subtasks.slice();
+    subtasks[index].name = event.target.value;
+
+    setTask({
+      ...task,
+      subtasks: subtasks
+    })
+  }
+
+  function handleRemoveSubtaskButton(index) {
+    let subtasks = task.subtasks.slice();
+    console.log(index)
+    subtasks.splice(index, 1)
+
+    setTask({
+      ...task,
+      subtasks: subtasks
+    })
+  }
+
+  function handleAddSubtaskButton() {
+    setTask({
+      ...task,
+      subtasks: [...task.subtasks, { name: '' }]
+    })
+  }
+
+  return <div className='container'>
     {task &&
       <form onSubmit={updateTask}>
         <div className="form-group row">
@@ -199,11 +228,22 @@ function EditTask(props) {
           </div>
         }
 
-        <div className="form-group row">
-          <div className="col-sm-10">
-            <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
-            <button type="submit" className="btn btn-primary">Update</button>
+        <h1>Subtasks</h1>
+        <div className="d-flex align-items-center justify-content-center">
+          <div className="form-group col-md-3">
+            {task.subtasks.map((subtask, index) => {
+              return <div key={index} className="input-group sm-3">
+                <input className="form-control" type="text" style={{ textAlign: "center" }} value={subtask.name} onChange={handleSubtaskChange.bind(this, index)} />
+                <button type="button" className="btn btn-danger" onClick={() => handleRemoveSubtaskButton(index)}>Delete</button>
+              </div>
+            })}
           </div>
+        </div>
+
+        <div className='form-control'>
+          <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
+          <button type="button" className="btn btn-success" onClick={handleAddSubtaskButton}>Add subtask</button>
+          <button type="submit" className="btn btn-primary">Update</button>
         </div>
       </form>
     }
