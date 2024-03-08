@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import task.manager.entity.Subtask;
 import task.manager.entity.Task;
-import task.manager.entity.TasksRepository;
-import task.manager.entity.UsersRepository;
+import task.manager.entity.repository.TasksRepository;
+import task.manager.entity.repository.UsersRepository;
 import task.manager.utils.AuthenticationUtils;
 
 import java.util.ArrayList;

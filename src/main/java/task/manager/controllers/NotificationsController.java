@@ -6,8 +6,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.Notification;
-import task.manager.entity.NotificationsRepository;
-import task.manager.entity.UsersRepository;
+import task.manager.entity.repository.NotificationsRepository;
+import task.manager.entity.repository.UsersRepository;
 import task.manager.security.UserDetailsImpl;
 
 import java.util.Optional;

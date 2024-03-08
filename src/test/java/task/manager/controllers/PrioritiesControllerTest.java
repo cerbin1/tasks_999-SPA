@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import task.manager.entity.PrioritiesRepository;
+import task.manager.entity.repository.PrioritiesRepository;
 import task.manager.entity.Priority;
 
 import java.util.Arrays;

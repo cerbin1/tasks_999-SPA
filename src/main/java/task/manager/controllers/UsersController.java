@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.User;
-import task.manager.entity.UsersRepository;
+import task.manager.entity.repository.UsersRepository;
 
 import java.util.ArrayList;
 import java.util.List;

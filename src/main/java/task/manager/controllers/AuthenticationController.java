@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.*;
+import task.manager.entity.repository.RolesRepository;
+import task.manager.entity.repository.UsersRepository;
 import task.manager.security.UserDetailsImpl;
 import task.manager.security.jwt.JwtResponse;
 import task.manager.security.jwt.JwtUtils;

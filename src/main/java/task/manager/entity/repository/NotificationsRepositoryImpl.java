@@ -1,7 +1,11 @@
-package task.manager.entity;
+package task.manager.entity.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import task.manager.entity.Notification;
+import task.manager.entity.Task;
+import task.manager.entity.repository.NotificationsRepository;
+import task.manager.entity.repository.NotificationsRepositoryCustom;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import task.manager.entity.User;
 import task.manager.entity.UserActivationLink;
-import task.manager.entity.UserActivationLinksRepository;
+import task.manager.entity.repository.UserActivationLinksRepository;
 
 import java.util.UUID;
 

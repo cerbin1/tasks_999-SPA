@@ -1,4 +1,7 @@
-package task.manager.entity;
+package task.manager.entity.repository;
+
+import task.manager.entity.Notification;
+import task.manager.entity.Task;
 
 import java.util.List;
 

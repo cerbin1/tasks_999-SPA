@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import task.manager.entity.User;
 import task.manager.entity.UserActivationLink;
-import task.manager.entity.UsersRepository;
+import task.manager.entity.repository.UsersRepository;
 import task.manager.security.service.UserActivatorService;
 
 import java.util.UUID;
