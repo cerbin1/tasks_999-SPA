@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import task.manager.entity.Notification;
 import task.manager.entity.Task;
-import task.manager.entity.repository.NotificationsRepository;
-import task.manager.entity.repository.NotificationsRepositoryCustom;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +35,12 @@ public class NotificationsRepositoryImpl implements NotificationsRepositoryCusto
     @Override
     public void createForTask(Task task) {
         Notification notification = new Notification("New Task", task.getName(), task.getAssignee(), LocalDateTime.now(), false, null);
+        notificationsRepository.save(notification);
+    }
+
+    @Override
+    public void createForMessage(Task task) {
+        Notification notification = new Notification("New Message", task.getName(), task.getAssignee(), LocalDateTime.now(), false, null);
         notificationsRepository.save(notification);
     }
 }

@@ -11,6 +11,7 @@ import task.manager.entity.Task;
 import task.manager.entity.User;
 import task.manager.entity.dto.ChatMessageDto;
 import task.manager.entity.repository.ChatMessagesRepository;
+import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.TasksRepository;
 import task.manager.entity.repository.UsersRepository;
 import task.manager.security.jwt.MessageResponse;
@@ -27,12 +28,14 @@ public class ChatMessagesController {
     private final ChatMessagesRepository chatMessagesRepository;
     private final UsersRepository usersRepository;
     private final TasksRepository tasksRepository;
+    private final NotificationsRepository notificationsRepository;
 
     @Autowired
-    public ChatMessagesController(ChatMessagesRepository chatMessagesRepository, UsersRepository usersRepository, TasksRepository tasksRepository) {
+    public ChatMessagesController(ChatMessagesRepository chatMessagesRepository, UsersRepository usersRepository, TasksRepository tasksRepository, NotificationsRepository notificationsRepository) {
         this.chatMessagesRepository = chatMessagesRepository;
         this.usersRepository = usersRepository;
         this.tasksRepository = tasksRepository;
+        this.notificationsRepository = notificationsRepository;
     }
 
     @PostMapping
@@ -50,6 +53,8 @@ public class ChatMessagesController {
         Task task = tasksRepository.findById(taskId).orElseThrow();
 
         ChatMessage messageCreated = chatMessagesRepository.save(new ChatMessage(content, sender, LocalDateTime.now(), task));
+
+        notificationsRepository.createForMessage(task);
         return new ResponseEntity<>(messageCreated, CREATED);
     }
 }

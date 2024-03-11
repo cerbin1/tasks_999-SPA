@@ -14,4 +14,6 @@ public interface NotificationsRepositoryCustom {
     void markNotificationAsRead(Notification notification);
 
     void createForTask(Task task);
+
+    void createForMessage(Task task);
 }
