@@ -6,6 +6,7 @@ import task.manager.entity.Notification;
 import task.manager.entity.Task;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,16 @@ public class NotificationsRepositoryImpl implements NotificationsRepositoryCusto
 
     @Override
     public List<Notification> findByUserId(Long userId) {
-        return notificationsRepository.findAll().stream().filter(notification -> notification.getUser().getId().equals(userId)).collect(Collectors.toList());
+        return notificationsRepository
+                .findAll()
+                .stream()
+                .filter(notification -> notification.getUser().getId().equals(userId))
+                .sorted(inactiveFirst())
+                .collect(Collectors.toList());
+    }
+
+    private static Comparator<Notification> inactiveFirst() {
+        return (o1, o2) -> Boolean.compare(o1.getRead(), o2.getRead());
     }
 
     @Override
