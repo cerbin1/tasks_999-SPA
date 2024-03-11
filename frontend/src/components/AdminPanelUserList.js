@@ -59,6 +59,8 @@ function Tasks(props) {
       <td>{user.username}</td>
       <td>{user.name}</td>
       <td>{user.surname}</td>
+      <td>{user.active ? 'Yes' : 'No'}</td>
+      <td>{user.messagesCount}</td>
       <td>
         <button type="button" className="btn btn-danger" onClick={() => handleRemove(user.id)}>Remove</button>
       </td>
@@ -75,7 +77,8 @@ function Tasks(props) {
           <th scope="col">Login</th>
           <th scope="col">Name</th>
           <th scope="col">Surname</th>
-          <th scope="col">Remove</th>
+          <th scope="col">Is active</th>
+          <th scope="col">Messages count</th>
         </tr>
       </thead>
       <tbody>
