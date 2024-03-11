@@ -48,6 +48,10 @@ public class Task {
     @JoinColumn(name = "task_id")
     private List<Subtask> subtasks;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "task_id")
+    private List<ChatMessage> messages;
+
     public void markAsCompleted() {
         this.completed = true;
         this.completeDate = LocalDateTime.now();

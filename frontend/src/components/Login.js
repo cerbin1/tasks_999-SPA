@@ -50,7 +50,8 @@ function Login(props) {
         return response.json();
       })
       .then(data => {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userId', data.id);
         navigate('/list')
       })
       .catch(error => {
