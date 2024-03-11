@@ -77,8 +77,10 @@ function Notifications(props) {
       <td>{notification.read ? "Yes" : <b>No</b>}</td>
       <td>{notification.readDate && notification.readDate.toString()}</td>
       <td>{notification.user.name} {notification.user.surname}</td>
+      <td><Link to='/details' state={{ id: notification.task.id }}>Go to task</Link></td>
+
       <td>
-        <button type="button" className="btn btn-primary" disabled = {notification.read} onClick={() => handleMarkNotificationAsRead(notification.id)}>Read</button>
+        <button type="button" className="btn btn-primary" disabled={notification.read} onClick={() => handleMarkNotificationAsRead(notification.id)}>Read</button>
       </td>
       <td>
         <button type="button" className="btn btn-danger" onClick={() => handleRemove(notification.id)}>Remove</button>
@@ -97,6 +99,7 @@ function Notifications(props) {
           <th scope="col">Is read</th>
           <th scope="col">Read date</th>
           <th scope="col">User assigned</th>
+          <th scope="col">Link</th>
           <th scope="col">Mark as read</th>
           <th scope="col">Remove</th>
         </tr>

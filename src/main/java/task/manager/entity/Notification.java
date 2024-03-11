@@ -22,8 +22,9 @@ public class Notification {
     @Column
     private String name;
 
-    @Column
-    private String taskName;
+    @ManyToOne
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task task;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -40,9 +41,9 @@ public class Notification {
     @Setter
     private LocalDateTime readDate;
 
-    public Notification(String name, String taskName, User user, LocalDateTime createDate, Boolean read, LocalDateTime readDate) {
+    public Notification(String name, Task task, User user, LocalDateTime createDate, Boolean read, LocalDateTime readDate) {
         this.name = name;
-        this.taskName = taskName;
+        this.task = task;
         this.user = user;
         this.createDate = createDate;
         this.read = read;
