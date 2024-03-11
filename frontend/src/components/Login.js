@@ -52,7 +52,7 @@ function Login(props) {
       .then(data => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('userId', data.id);
-        navigate('/list')
+        navigate('/myList')
       })
       .catch(error => {
         alert(error)
