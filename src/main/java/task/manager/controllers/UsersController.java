@@ -54,6 +54,6 @@ public class UsersController {
         return new ResponseEntity<>(NOT_FOUND);
     }
 
-    record UserForTask(Long id, String name, String surname) {
+    record UserForTask(Long id, String name, String surname, Boolean active) {
     }
 }
