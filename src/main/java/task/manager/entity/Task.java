@@ -1,5 +1,6 @@
 package task.manager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class Task {
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +39,11 @@ public class Task {
     private User creator;
 
     @ManyToOne
-    @JoinColumn(name = "ASSIGNEE_ID", referencedColumnName = "id")
+    @JoinColumn(name = "assignee_id", referencedColumnName = "id")
     private User assignee;
 
     @ManyToOne
-    @JoinColumn(name = "PRIORITY_ID", referencedColumnName = "id")
+    @JoinColumn(name = "priority_id", referencedColumnName = "id")
     private Priority priority;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -51,6 +53,11 @@ public class Task {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "task_id")
     private List<ChatMessage> messages;
+
+    @OneToOne(mappedBy = "task", cascade = CascadeType.ALL)
+    @Setter
+    @JsonIgnore
+    private TaskReminder taskReminder;
 
     public void markAsCompleted() {
         this.completed = true;

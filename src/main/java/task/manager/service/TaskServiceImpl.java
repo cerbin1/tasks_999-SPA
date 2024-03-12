@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import task.manager.entity.Subtask;
 import task.manager.entity.Task;
+import task.manager.entity.TaskReminder;
 import task.manager.entity.repository.TasksRepository;
 import task.manager.entity.repository.UsersRepository;
 import task.manager.utils.AuthenticationUtils;
@@ -29,6 +30,10 @@ public class TaskServiceImpl implements TaskService {
     public Task createTaskWithSubtasks(Task task) {
         Long loggedUserId = AuthenticationUtils.getLoggedUserId();
         task.setCreator(usersRepository.findById(loggedUserId).orElseThrow());
+        TaskReminder taskReminder = new TaskReminder();
+        taskReminder.setPlannedSendDate(task.getDeadline().minusHours(1));
+        task.setTaskReminder(taskReminder);
+        taskReminder.setTask(task);
         return saveTaskWithSubtasksInSequence(task);
     }
 
