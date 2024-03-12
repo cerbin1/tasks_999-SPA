@@ -1,5 +1,6 @@
 package task.manager.security.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -8,14 +9,18 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
+@Log4j2
 public class EmailSendingServiceImpl implements EmailSendingService {
 
     @Override
-    public boolean sendEmail(String emailContent, String emailReceiver) {
-        String subject = "Task Application - activation link";
+    public boolean sendEmail(String emailSubject, String emailContent, String emailReceiver) {
         String senderEmail = System.getenv("TASKS_MAIL_SENDER");
         String senderPassword = System.getenv("TASKS_MAIL_PWD");
-        return Mailer.send(senderEmail, senderPassword, emailReceiver, subject, emailContent);
+        boolean emailSent = Mailer.send(senderEmail, senderPassword, emailReceiver, emailSubject, emailContent);
+        if (emailSent) {
+            log.info(String.format("Email Sent. receiver: %s, subject: %s, content: %s", emailReceiver, emailSubject, emailContent));
+        }
+        return emailSent;
     }
 
     static class Mailer {
@@ -48,8 +53,7 @@ public class EmailSendingServiceImpl implements EmailSendingService {
                 Transport.send(message);
                 return true;
             } catch (MessagingException e) {
-                System.out.println("There was a problem while sending email");
-                System.out.println(e.getMessage());
+                log.error("There was a problem while sending email");
                 return false;
             }
         }

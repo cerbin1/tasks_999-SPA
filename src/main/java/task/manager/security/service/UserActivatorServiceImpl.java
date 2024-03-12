@@ -29,7 +29,7 @@ public class UserActivatorServiceImpl implements UserActivatorService {
         UserActivationLink userActivationLink = new UserActivationLink(user.getId());
         userActivationLinksRepository.save(userActivationLink);
         String taskContent = applicationUrl + "auth/activate/" + userActivationLink.getLinkId();
-        emailSendingService.sendEmail(taskContent, user.getEmail());
+        emailSendingService.sendEmail(taskContent, "Task Application - activation link", user.getEmail());
     }
 
     @Override
