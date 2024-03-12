@@ -68,6 +68,24 @@ function Notifications(props) {
       });
   }
 
+  function handleMarkAllNotificationsAsReadButton() {
+    fetch(apiUrl + '/read?userId=' + localStorage.getItem('userId'), {
+      method: 'PUT',
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        loadNotifications();
+      })
+      .catch(error => {
+        alert(error)
+      });
+  }
+
   const listOfNotifications = data.map((notification) =>
     <tr key={notification.id}>
       <th scope="row">{notification.id}</th>
@@ -108,6 +126,10 @@ function Notifications(props) {
         {listOfNotifications}
       </tbody>
     </table>
+
+    <div className="d-flex align-items-center justify-content-center">
+      <button className='btn btn-primary' onClick={() => handleMarkAllNotificationsAsReadButton()}>Mark all as read</button>
+    </div>
   </div>
 }
 

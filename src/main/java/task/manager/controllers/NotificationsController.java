@@ -9,6 +9,7 @@ import task.manager.entity.Notification;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.UsersRepository;
 import task.manager.security.UserDetailsImpl;
+import task.manager.service.NotificationsService;
 import task.manager.utils.AuthenticationUtils;
 
 import java.util.Optional;
@@ -20,11 +21,13 @@ import static org.springframework.http.HttpStatus.*;
 public class NotificationsController {
 
     private final NotificationsRepository notificationsRepository;
+    private final NotificationsService notificationsService;
     private final UsersRepository usersRepository;
 
     @Autowired
-    public NotificationsController(NotificationsRepository notificationsRepository, UsersRepository usersRepository) {
+    public NotificationsController(NotificationsRepository notificationsRepository, NotificationsService notificationsService, UsersRepository usersRepository) {
         this.notificationsRepository = notificationsRepository;
+        this.notificationsService = notificationsService;
         this.usersRepository = usersRepository;
     }
 
@@ -56,6 +59,13 @@ public class NotificationsController {
             return new ResponseEntity<>(BAD_REQUEST);
         }
         notificationsRepository.markNotificationAsRead(notification);
+        return new ResponseEntity<>(OK);
+    }
+
+    @PutMapping("/read")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> markAllUserNotificationsAsRead(@RequestParam Long userId) {
+        notificationsService.markAllUserNotificationsAsRead(userId);
         return new ResponseEntity<>(OK);
     }
 
