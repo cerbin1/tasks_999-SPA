@@ -30,7 +30,7 @@ public class ReminderScheduler {
     public void distributeReports() {
         List<TaskReminder> remindersToSend = taskRemindersService.getRemindersToSend();
         remindersToSend.forEach(taskReminder -> {
-            String linkToTaskDetails = applicationFrontUrl + "api/tasks/" + taskReminder.getTask().getId();
+            String linkToTaskDetails = applicationFrontUrl + taskReminder.getTask().getId() + "/details";
             String emailContent = String.format("I would like to remind you that you have a task to accomplish. Task name: %s Link: %s",
                     taskReminder.getTask().getName(), linkToTaskDetails);
             emailSendingService.sendEmail("Task reminder", emailContent, taskReminder.getTask().getAssignee().getEmail());

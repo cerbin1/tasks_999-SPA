@@ -43,7 +43,7 @@ function MyTasks(props) {
       <td>{task.completed ? "Yes" : "No"}</td>
       <td>{task.completeDate ? task.completeDate.toString() : ""}</td>
       <td>
-        <Link to='/details' state={{ id: task.id }}>Details</Link>
+      <Link to={`/${task.id}/details`}>Details</Link>
       </td>
     </tr>
   );

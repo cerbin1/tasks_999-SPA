@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Subtask from './Subtask';
 
 function TaskDetails(props) {
@@ -10,8 +10,7 @@ function TaskDetails(props) {
 
   const apiUrl = 'http://localhost:8080/api/';
 
-  const location = useLocation()
-  const { id } = location.state
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
