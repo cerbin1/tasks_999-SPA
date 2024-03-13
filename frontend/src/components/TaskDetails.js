@@ -146,7 +146,6 @@ function TaskDetails(props) {
             {task.messages.length == 0 ? <p>No messages yet.</p> :
               <div>
                 {task.messages.map((message, index) => {
-                  console.log(task.messages)
                   if (message.sender.id == localStorage.getItem('userId')) {
                     return <div class="d-flex flex-row" key={index}>
                       <div>
