@@ -59,6 +59,11 @@ public class Task {
     @JsonIgnore
     private TaskReminder taskReminder;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id")
+    @Setter
+    private List<TaskFile> taskFiles;
+
     public void markAsCompleted() {
         this.completed = true;
         this.completeDate = LocalDateTime.now();

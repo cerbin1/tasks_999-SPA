@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 function CreateTask(props) {
   const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: '' }] })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [errors, setErrors] = useState();
+  const [files, setFiles] = useState([]);
 
   const apiUrl = 'http://localhost:8080/api/';
 
@@ -115,12 +117,34 @@ function CreateTask(props) {
         }
         return response.json();
       })
-      .then(data => {
-        navigate('/list');
-      })
+      .then(task => uploadFiles(task.id))
       .catch(error => {
         alert(error)
       });
+  }
+
+  function uploadFiles(taskId) {
+    if (files.length) {
+      const formData = new FormData();
+      [...files].forEach((file) => {
+        formData.append('files', file, file.name)
+      })
+
+      const url = apiUrl + 'files/upload?taskId=' + taskId;
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+          "Authorization": `Bearer ` + localStorage.getItem('token'),
+        },
+      };
+      axios.post(url, formData, config)
+        .then((response) => {
+          navigate('/list');
+        })
+        .catch((error) => {
+          console.error("Error uploading file: ", error);
+        });
+    }
   }
 
   function handleCancelButton() {
@@ -212,6 +236,8 @@ function CreateTask(props) {
           })}
         </div>
       </div>
+      <h1>Files upload</h1>
+      <input type="file" multiple onChange={e => setFiles(e.target.files)} />
 
 
       <div className="form-group row">
