@@ -6,14 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import task.manager.entity.Task;
 import task.manager.entity.TaskFile;
 import task.manager.entity.repository.TasksRepository;
 import task.manager.service.TaskFilesService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/files")
@@ -44,5 +42,14 @@ public class TaskFileController {
             message = "Could not upload the files: " + filesToUpload.stream().map(MultipartFile::getOriginalFilename);
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<byte[]> getFile(@PathVariable String id) {
+        TaskFile taskFile = taskFilesService.getFile(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + taskFile.getName() + "\"")
+                .body(taskFile.getData());
     }
 }

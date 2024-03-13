@@ -26,4 +26,8 @@ public class TaskFilesService {
 
         return filesRepository.save(TaskFile);
     }
+
+    public TaskFile getFile(String id) {
+        return filesRepository.findById(id).orElseThrow();
+    }
 }

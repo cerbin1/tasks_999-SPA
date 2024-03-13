@@ -181,7 +181,12 @@ function TaskDetails(props) {
           <button type="button" className="btn btn-primary" onClick={() => setShowChat(true)}>Show chat</button>
         }
 
-
+        <h1>Files</h1>
+        <div class="list-group">
+          {task.taskFiles.map((file, i) => (
+            <a key={i} className="list-group-item list-group-item-action" href={`${apiUrl}files/${file.id}`}>{file.name}</a>
+          ))}
+        </div>
 
         <div className='form-control'>
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
