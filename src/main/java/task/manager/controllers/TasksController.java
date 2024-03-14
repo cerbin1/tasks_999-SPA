@@ -4,8 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.Task;
+import task.manager.entity.TaskCategory;
+import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.TasksRepository;
 import task.manager.security.jwt.MessageResponse;
 import task.manager.service.TaskService;
@@ -137,5 +138,11 @@ public class TasksController {
             return new ResponseEntity<>(BAD_REQUEST);
         }
         return new ResponseEntity<>(NOT_FOUND);
+    }
+
+    @GetMapping("/categories")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getAllCategories() {
+        return new ResponseEntity<>(TaskCategory.values(), OK);
     }
 }

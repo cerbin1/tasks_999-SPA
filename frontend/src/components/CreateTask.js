@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function CreateTask(props) {
-  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: '' }] })
+  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: '' }], })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
+  const [categories, setCategories] = useState()
   const [errors, setErrors] = useState();
   const [files, setFiles] = useState([]);
 
@@ -45,6 +46,25 @@ function CreateTask(props) {
       })
       .then(data => {
         setPriorities(data)
+      })
+      .catch(error => {
+        alert(error)
+      });
+
+    fetch(apiUrl + 'tasks/categories', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data)
+        setCategories(data)
       })
       .catch(error => {
         alert(error)
@@ -117,7 +137,10 @@ function CreateTask(props) {
         }
         return response.json();
       })
-      .then(task => uploadFiles(task.id))
+      .then(task => {
+        uploadFiles(task.id);
+        navigate('/list');
+      })
       .catch(error => {
         alert(error)
       });
@@ -139,7 +162,6 @@ function CreateTask(props) {
       };
       axios.post(url, formData, config)
         .then((response) => {
-          navigate('/list');
         })
         .catch((error) => {
           console.error("Error uploading file: ", error);
@@ -175,6 +197,13 @@ function CreateTask(props) {
     setTask({
       ...task,
       subtasks: [...task.subtasks, { name: '' }]
+    })
+  }
+
+  function handleCategoryChangeButton(event) {
+    setTask({
+      ...task,
+      category: event.target.value
     })
   }
 
@@ -225,6 +254,17 @@ function CreateTask(props) {
         </div>
       }
 
+      <h1>Category</h1>
+      {categories &&
+        <div className="d-flex align-items-center justify-content-center">
+          <div className="form-group col-md-3">
+            <select className="form-select" name="category" onChange={handleCategoryChangeButton}>
+              {categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
+            </select>
+          </div>
+        </div>
+      }
+
       <h1>Subtasks</h1>
       <div className="d-flex align-items-center justify-content-center">
         <div className="form-group col-md-3">
@@ -238,7 +278,6 @@ function CreateTask(props) {
       </div>
       <h1>Files upload</h1>
       <input type="file" multiple onChange={e => setFiles(e.target.files)} />
-
 
       <div className="form-group row">
         <div className='form-control'>

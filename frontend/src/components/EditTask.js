@@ -7,6 +7,7 @@ function EditTask(props) {
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [files, setFiles] = useState([]);
+  const [categories, setCategories] = useState()
   const [errors, setErrors] = useState();
 
   const apiUrl = 'http://localhost:8080/api/';
@@ -55,6 +56,25 @@ function EditTask(props) {
       .catch(error => {
         alert(error)
       });
+
+      fetch(apiUrl + 'tasks/categories', {
+        headers: {
+          "Authorization": `Bearer ` + localStorage.getItem('token'),
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data)
+          setCategories(data)
+        })
+        .catch(error => {
+          alert(error)
+        });
 
   }, []);
 
@@ -230,6 +250,13 @@ function EditTask(props) {
       });
   }
 
+  function handleCategoryChangeButton(event) {
+    setTask({
+      ...task,
+      category: event.target.value
+    })
+  }
+
   return <div className='container'>
     {task &&
       <form onSubmit={updateTask}>
@@ -277,6 +304,17 @@ function EditTask(props) {
             </div>
           </div>
         }
+
+      <h1>Category</h1>
+      {categories &&
+        <div className="d-flex align-items-center justify-content-center">
+          <div className="form-group col-md-3">
+            <select className="form-select" name="category" onChange={handleCategoryChangeButton}>
+              {categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
+            </select>
+          </div>
+        </div>
+      }
 
         <h1>Subtasks</h1>
         <div className="d-flex align-items-center justify-content-center">

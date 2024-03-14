@@ -64,6 +64,9 @@ public class Task {
     @Setter
     private List<TaskFile> taskFiles;
 
+    @Enumerated(EnumType.STRING)
+    private TaskCategory category;
+
     public void markAsCompleted() {
         this.completed = true;
         this.completeDate = LocalDateTime.now();

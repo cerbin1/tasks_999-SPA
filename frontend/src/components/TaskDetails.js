@@ -131,6 +131,12 @@ function TaskDetails(props) {
           <p className="col-sm-8">{task.priority.value}</p>
         </div>
 
+        <h1>Category</h1>
+        <div className="row">
+          <label className="col-sm-4 col-form-label fw-bold">Category</label>
+          <p className="col-sm-8">{task.category}</p>
+        </div>
+
         <h1>Subtasks</h1>
         <div className="d-flex align-items-center justify-content-center">
           <div className="col-md-3">
