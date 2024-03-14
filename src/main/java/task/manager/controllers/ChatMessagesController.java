@@ -52,7 +52,7 @@ public class ChatMessagesController {
         User sender = usersRepository.findById(AuthenticationUtils.getLoggedUserId()).orElseThrow();
         Task task = tasksRepository.findById(taskId).orElseThrow();
 
-        ChatMessage messageCreated = chatMessagesRepository.save(new ChatMessage(content, sender, LocalDateTime.now(), task));
+        ChatMessage messageCreated = chatMessagesRepository.save(new ChatMessage(content, sender, LocalDateTime.now(), task.getMessages().size()));
 
         notificationsRepository.createForMessage(task);
         return new ResponseEntity<>(messageCreated, CREATED);

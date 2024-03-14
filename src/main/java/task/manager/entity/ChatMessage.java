@@ -32,16 +32,10 @@ public class ChatMessage {
     @Column(nullable = false)
     private LocalDateTime sentAt;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
-
-    public ChatMessage(String content, User sender, LocalDateTime sentAt, Task task) {
+    public ChatMessage(String content, User sender, LocalDateTime sentAt, Integer taskMessagesCount) {
         this.content = content;
         this.sender = sender;
         this.sentAt = sentAt;
-        this.task = task;
-        this.sequence = task.getMessages().size();
+        this.sequence = taskMessagesCount;
     }
 }
