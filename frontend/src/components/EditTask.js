@@ -69,7 +69,6 @@ function EditTask(props) {
           return response.json();
         })
         .then(data => {
-          console.log(data)
           setCategories(data)
         })
         .catch(error => {

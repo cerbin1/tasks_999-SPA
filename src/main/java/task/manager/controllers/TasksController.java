@@ -112,12 +112,24 @@ public class TasksController {
         return new ResponseEntity<>(NOT_FOUND);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/searchByName")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> getTasksForSearch(@RequestParam String value) {
+    public ResponseEntity<?> searchTasksByName(@RequestParam(name = "value") String name) {
         List<Task> foundTasks = new ArrayList<>();
         tasksRepository.findAll().forEach(task -> {
-            if (task.getName().contains(value)) {
+            if (task.getName().contains(name)) {
+                foundTasks.add(task);
+            }
+        });
+        return new ResponseEntity<>(foundTasks, OK);
+    }
+
+    @GetMapping("/searchByCategory")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> searchTasksByCategory(@RequestParam(name = "value") TaskCategory category) {
+        List<Task> foundTasks = new ArrayList<>();
+        tasksRepository.findAll().forEach(task -> {
+            if (task.getCategory() == category) {
                 foundTasks.add(task);
             }
         });
