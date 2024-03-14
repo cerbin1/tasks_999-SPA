@@ -12,6 +12,7 @@ import task.manager.entity.repository.TasksRepository;
 import task.manager.service.TaskFilesService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/files")
@@ -51,5 +52,18 @@ public class TaskFileController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + taskFile.getName() + "\"")
                 .body(taskFile.getData());
+    }
+
+    @DeleteMapping("/task/{taskId}")
+    public ResponseEntity<?> deleteAllTaskFiles(@PathVariable Long taskId) {
+        Optional<Task> maybeTask = tasksRepository.findById(taskId);
+        if (maybeTask.isPresent()) {
+            Task task = maybeTask.get();
+            task.getTaskFiles().clear();
+            tasksRepository.save(task);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 function EditTask(props) {
   const [task, setTask] = useState()
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
+  const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState();
 
   const apiUrl = 'http://localhost:8080/api/';
@@ -16,24 +18,7 @@ function EditTask(props) {
 
   useEffect(() => {
 
-    fetch(apiUrl + 'tasks/' + id, {
-      headers: {
-        "Authorization": `Bearer ` + localStorage.getItem('token'),
-      }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setTask(data)
-      })
-      .catch(error => {
-        alert(error)
-      });
-
+    loadTaskDetails();
 
     fetch(apiUrl + 'users', {
       headers: {
@@ -73,6 +58,26 @@ function EditTask(props) {
 
   }, []);
 
+  function loadTaskDetails() {
+    fetch(apiUrl + 'tasks/' + id, {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setTask(data)
+      })
+      .catch(error => {
+        alert(error)
+      });
+  }
+
 
   function validateValues() {
     let errors = {};
@@ -108,11 +113,38 @@ function EditTask(props) {
         }
         return response.json();
       })
-      .then(data => {
-        navigate('/list');
+      .then(task => {
+        if (files.length) {
+          uploadFiles(task.id)
+        }
+        else {
+          navigate('/list');
+        }
       })
       .catch(error => {
         alert(error)
+      });
+  }
+
+  function uploadFiles(taskId) {
+    const formData = new FormData();
+    [...files].forEach((file) => {
+      formData.append('files', file, file.name)
+    })
+
+    const url = apiUrl + 'files/upload?taskId=' + taskId;
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      },
+    };
+    axios.post(url, formData, config)
+      .then((response) => {
+        navigate('/list');
+      })
+      .catch((error) => {
+        console.error("Error uploading file: ", error);
       });
   }
 
@@ -151,7 +183,6 @@ function EditTask(props) {
     navigate('/list');
   }
 
-
   function handleSubtaskChange(index, event) {
     let subtasks = task.subtasks.slice();
     subtasks[index].name = event.target.value;
@@ -178,6 +209,25 @@ function EditTask(props) {
       ...task,
       subtasks: [...task.subtasks, { name: '' }]
     })
+  }
+
+  function handleDeleteAllTaskFilesButton() {
+    fetch(apiUrl + 'files/task/' + task.id, {
+      method: 'DELETE',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        loadTaskDetails();
+      })
+      .catch(error => {
+        alert(error)
+      });
   }
 
   return <div className='container'>
@@ -239,6 +289,15 @@ function EditTask(props) {
             })}
           </div>
         </div>
+
+        <h1>Files upload</h1>
+        {task.taskFiles.length == 0 ?
+          <input type="file" multiple onChange={e => setFiles(e.target.files)} /> :
+          <div>
+            File was uploaded. If you want to upload new files you need to delete all previous one first.
+            <button type="button" className="btn btn-danger" onClick={handleDeleteAllTaskFilesButton}>Delete all files</button>
+          </div>
+        }
 
         <div className='form-control'>
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
