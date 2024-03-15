@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function CreateTask(props) {
-  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: '' }], })
+  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: '' }], labels: [] })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [categories, setCategories] = useState()
   const [errors, setErrors] = useState();
   const [files, setFiles] = useState([]);
+  const [label, setLabel] = useState('');
 
   const apiUrl = 'http://localhost:8080/api/';
 
@@ -63,7 +64,6 @@ function CreateTask(props) {
         return response.json();
       })
       .then(data => {
-        console.log(data)
         setCategories(data)
       })
       .catch(error => {
@@ -76,6 +76,32 @@ function CreateTask(props) {
     setTask({
       ...task,
       [event.target.id]: event.target.value
+    })
+  }
+
+  function handleChangeLabel(event) {
+    setLabel(event.target.value)
+  }
+
+  function handleLabelAddButton() {
+    if (label) {
+      let labels = task.labels
+      labels.push(label)
+      setTask({
+        ...task,
+        labels: labels
+      })
+      setLabel('')
+    }
+  }
+
+  function handleLabelDeleteButton(index) {
+    let labels = task.labels.slice();
+    labels.splice(index, 1)
+
+    setTask({
+      ...task,
+      labels: labels
     })
   }
 
@@ -253,6 +279,16 @@ function CreateTask(props) {
           </div>
         </div>
       }
+      
+      <h1>Labels</h1>
+      {task.labels && task.labels.map((label, index) => {
+        return <div key={index} className="input-group mb-1">
+          <span className="form-control">{label}</span>
+          <button type="button" className="btn btn-danger" onClick={() => handleLabelDeleteButton(index)}>Delete</button>
+        </div>
+      })}
+      <input type="text" className="form-control" id="name" value={label} onChange={handleChangeLabel} />
+      <button type="button" className="btn btn-success" onClick={handleLabelAddButton}>Add label</button>
 
       <h1>Category</h1>
       {categories &&

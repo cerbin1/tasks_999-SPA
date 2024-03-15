@@ -67,6 +67,10 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskCategory category;
 
+    @Column
+    @ElementCollection
+    private List<String> labels;
+
     public void markAsCompleted() {
         this.completed = true;
         this.completeDate = LocalDateTime.now();
