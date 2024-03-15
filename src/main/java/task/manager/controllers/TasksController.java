@@ -97,7 +97,6 @@ public class TasksController {
         return new ResponseEntity<>(NOT_FOUND);
     }
 
-
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deleteBy(@PathVariable Long id) {
@@ -130,6 +129,18 @@ public class TasksController {
         List<Task> foundTasks = new ArrayList<>();
         tasksRepository.findAll().forEach(task -> {
             if (task.getCategory() == category) {
+                foundTasks.add(task);
+            }
+        });
+        return new ResponseEntity<>(foundTasks, OK);
+    }
+
+    @GetMapping("/searchByLabel")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> searchTasksByLabel(@RequestParam(name = "label") String label) {
+        List<Task> foundTasks = new ArrayList<>();
+        tasksRepository.findAll().forEach(task -> {
+            if (task.getLabels().contains(label)) {
                 foundTasks.add(task);
             }
         });

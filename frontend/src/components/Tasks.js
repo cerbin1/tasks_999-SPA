@@ -7,6 +7,7 @@ function Tasks(props) {
   const [categories, setCategories] = useState()
   const [searchByName, setSearchByName] = useState('')
   const [searchByCategory, setSearchByCategory] = useState('')
+  const [searchByLabel, setSearchByLabel] = useState('')
 
 
 
@@ -121,6 +122,30 @@ function Tasks(props) {
       });
   }
 
+  function handleSearchByLabelChange(event) {
+    setSearchByLabel(event.target.value)
+  }
+
+  function handleSearchByLabelButton() {
+    fetch(apiUrl + '/searchByLabel?label=' + searchByLabel, {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setData(data);
+      })
+      .catch(error => {
+        alert(error)
+      });
+  }
+
   const listOfElements = data.map((task) =>
     <tr key={task.id}>
       <th scope="row">{task.id}</th>
@@ -178,6 +203,11 @@ function Tasks(props) {
         </div>
       }
       <button type="button" className="btn btn-primary" onClick={handleSearchByCategoryButton}>Search by category</button>
+
+      <div className="form-group row">
+        <input type="text" className="form-control" id="name" value={searchByLabel} onChange={handleSearchByLabelChange} />
+        <button type="button" className="btn btn-primary" onClick={handleSearchByLabelButton}>Search by label</button>
+      </div>
 
     </div>
   </div>
