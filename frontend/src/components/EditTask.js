@@ -8,6 +8,7 @@ function EditTask(props) {
   const [priorities, setPriorities] = useState()
   const [files, setFiles] = useState([]);
   const [categories, setCategories] = useState()
+  const [label, setLabel] = useState('');
   const [errors, setErrors] = useState();
 
   const apiUrl = 'http://localhost:8080/api/';
@@ -57,23 +58,23 @@ function EditTask(props) {
         alert(error)
       });
 
-      fetch(apiUrl + 'tasks/categories', {
-        headers: {
-          "Authorization": `Bearer ` + localStorage.getItem('token'),
+    fetch(apiUrl + 'tasks/categories', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        return response.json();
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          setCategories(data)
-        })
-        .catch(error => {
-          alert(error)
-        });
+      .then(data => {
+        setCategories(data)
+      })
+      .catch(error => {
+        alert(error)
+      });
 
   }, []);
 
@@ -256,6 +257,32 @@ function EditTask(props) {
     })
   }
 
+  function handleChangeLabel(event) {
+    setLabel(event.target.value)
+  }
+
+  function handleLabelAddButton() {
+    if (label) {
+      let labels = task.labels
+      labels.push(label)
+      setTask({
+        ...task,
+        labels: labels
+      })
+      setLabel('')
+    }
+  }
+
+  function handleLabelDeleteButton(index) {
+    let labels = task.labels.slice();
+    labels.splice(index, 1)
+
+    setTask({
+      ...task,
+      labels: labels
+    })
+  }
+
   return <div className='container'>
     {task &&
       <form onSubmit={updateTask}>
@@ -304,16 +331,26 @@ function EditTask(props) {
           </div>
         }
 
-      <h1>Category</h1>
-      {categories &&
-        <div className="d-flex align-items-center justify-content-center">
-          <div className="form-group col-md-3">
-            <select className="form-select" name="category" onChange={handleCategoryChangeButton}>
-              {categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
-            </select>
+        <h1>Labels</h1>
+        {task.labels && task.labels.map((label, index) => {
+          return <div key={index} className="input-group mb-1">
+            <span className="form-control">{label}</span>
+            <button type="button" className="btn btn-danger" onClick={() => handleLabelDeleteButton(index)}>Delete</button>
           </div>
-        </div>
-      }
+        })}
+        <input type="text" className="form-control" id="name" value={label} onChange={handleChangeLabel} />
+        <button type="button" className="btn btn-success" onClick={handleLabelAddButton}>Add label</button>
+
+        <h1>Category</h1>
+        {categories &&
+          <div className="d-flex align-items-center justify-content-center">
+            <div className="form-group col-md-3">
+              <select className="form-select" name="category" onChange={handleCategoryChangeButton}>
+                {categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
+              </select>
+            </div>
+          </div>
+        }
 
         <h1>Subtasks</h1>
         <div className="d-flex align-items-center justify-content-center">
