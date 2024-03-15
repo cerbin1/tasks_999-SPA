@@ -8,7 +8,6 @@ function EditTask(props) {
   const [priorities, setPriorities] = useState()
   const [files, setFiles] = useState([]);
   const [categories, setCategories] = useState()
-  const [label, setLabel] = useState('');
   const [errors, setErrors] = useState();
 
   const apiUrl = 'http://localhost:8080/api/';
@@ -98,7 +97,6 @@ function EditTask(props) {
       });
   }
 
-
   function validateValues() {
     let errors = {};
     if (task.name.length == 0) {
@@ -106,6 +104,12 @@ function EditTask(props) {
     }
     if (task.deadline.length == 0) {
       errors.deadline = true;
+    }
+    if (!task.subtasks.every((subtask) => subtask.name)) {
+      errors.subtasks = true;
+    }
+    if (!task.labels.every((label) => label)) {
+      errors.labels = true;
     }
     return errors;
   };
@@ -257,23 +261,24 @@ function EditTask(props) {
     })
   }
 
-  function handleChangeLabel(event) {
-    setLabel(event.target.value)
+  function handleLabelChange(index, event) {
+    let labels = task.labels.slice();
+    labels[index] = event.target.value;
+
+    setTask({
+      ...task,
+      labels: labels
+    })
   }
 
   function handleLabelAddButton() {
-    if (label) {
-      let labels = task.labels
-      labels.push(label)
-      setTask({
-        ...task,
-        labels: labels
-      })
-      setLabel('')
-    }
+    setTask({
+      ...task,
+      labels: [...task.labels, '']
+    })
   }
 
-  function handleLabelDeleteButton(index) {
+  function handleRemoveLabelButton(index) {
     let labels = task.labels.slice();
     labels.splice(index, 1)
 
@@ -334,11 +339,15 @@ function EditTask(props) {
         <h1>Labels</h1>
         {task.labels && task.labels.map((label, index) => {
           return <div key={index} className="input-group mb-1">
-            <span className="form-control">{label}</span>
-            <button type="button" className="btn btn-danger" onClick={() => handleLabelDeleteButton(index)}>Delete</button>
+            <input type="text" className="form-control" id="name" value={label} onChange={handleLabelChange.bind(this, index)} />
+            <button type="button" className="btn btn-danger" onClick={() => handleRemoveLabelButton(index)}>Delete</button>
           </div>
         })}
-        <input type="text" className="form-control" id="name" value={label} onChange={handleChangeLabel} />
+        {errors && errors.labels &&
+          <div className="alert alert-danger" role="alert">
+            You must enter value for every label before submitting.
+          </div>
+        }
         <button type="button" className="btn btn-success" onClick={handleLabelAddButton}>Add label</button>
 
         <h1>Category</h1>
@@ -363,6 +372,12 @@ function EditTask(props) {
             })}
           </div>
         </div>
+        {errors && errors.subtasks &&
+          <div className="alert alert-danger" role="alert">
+            You must enter name for every subtask before submitting.
+          </div>
+        }
+        <button type="button" className="btn btn-success" onClick={handleAddSubtaskButton}>Add subtask</button>
 
         <h1>Files upload</h1>
         {task.taskFiles.length == 0 ?
@@ -375,7 +390,6 @@ function EditTask(props) {
 
         <div className='form-control'>
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
-          <button type="button" className="btn btn-success" onClick={handleAddSubtaskButton}>Add subtask</button>
           <button type="submit" className="btn btn-primary">Update</button>
         </div>
       </form>

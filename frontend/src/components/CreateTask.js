@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function CreateTask(props) {
-  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [{ name: '' }], labels: [] })
+  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [], labels: [] })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [categories, setCategories] = useState()
   const [errors, setErrors] = useState();
   const [files, setFiles] = useState([]);
-  const [label, setLabel] = useState('');
 
   const apiUrl = 'http://localhost:8080/api/';
 
@@ -79,23 +78,24 @@ function CreateTask(props) {
     })
   }
 
-  function handleChangeLabel(event) {
-    setLabel(event.target.value)
+  function handleLabelChange(index, event) {
+    let labels = task.labels.slice();
+    labels[index] = event.target.value;
+
+    setTask({
+      ...task,
+      labels: labels
+    })
   }
 
   function handleLabelAddButton() {
-    if (label) {
-      let labels = task.labels
-      labels.push(label)
-      setTask({
-        ...task,
-        labels: labels
-      })
-      setLabel('')
-    }
+    setTask({
+      ...task,
+      labels: [...task.labels, '']
+    })
   }
 
-  function handleLabelDeleteButton(index) {
+  function handleRemoveLabelButton(index) {
     let labels = task.labels.slice();
     labels.splice(index, 1)
 
@@ -137,6 +137,13 @@ function CreateTask(props) {
     if (task.deadline.length == 0) {
       errors.deadline = true;
     }
+    if (!task.subtasks.every((subtask) => subtask.name)) {
+      errors.subtasks = true;
+    }
+    if (!task.labels.every((label) => label)) {
+      errors.labels = true;
+    }
+
     return errors;
   };
 
@@ -209,7 +216,7 @@ function CreateTask(props) {
     })
   }
 
-  function handleRemoveSubtaskButton(index, event) {
+  function handleRemoveSubtaskButton(index) {
     let subtasks = task.subtasks.slice();
     subtasks.splice(index, 1)
 
@@ -279,15 +286,19 @@ function CreateTask(props) {
           </div>
         </div>
       }
-      
+
       <h1>Labels</h1>
       {task.labels && task.labels.map((label, index) => {
         return <div key={index} className="input-group mb-1">
-          <span className="form-control">{label}</span>
-          <button type="button" className="btn btn-danger" onClick={() => handleLabelDeleteButton(index)}>Delete</button>
+          <input type="text" className="form-control" id="name" value={label} onChange={handleLabelChange.bind(this, index)} />
+          <button type="button" className="btn btn-danger" onClick={() => handleRemoveLabelButton(index)}>Delete</button>
         </div>
       })}
-      <input type="text" className="form-control" id="name" value={label} onChange={handleChangeLabel} />
+      {errors && errors.labels &&
+        <div className="alert alert-danger" role="alert">
+          You must enter value for every label before submitting.
+        </div>
+      }
       <button type="button" className="btn btn-success" onClick={handleLabelAddButton}>Add label</button>
 
       <h1>Category</h1>
@@ -312,13 +323,19 @@ function CreateTask(props) {
           })}
         </div>
       </div>
+      {errors && errors.subtasks &&
+        <div className="alert alert-danger" role="alert">
+          You must enter name for every subtask before submitting.
+        </div>
+      }
+      <button type="button" className="btn btn-success" onClick={handleAddSubtaskButton}>Add subtask</button>
+
       <h1>Files upload</h1>
       <input type="file" multiple onChange={e => setFiles(e.target.files)} />
 
       <div className="form-group row">
         <div className='form-control'>
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
-          <button type="button" className="btn btn-success" onClick={handleAddSubtaskButton}>Add subtask</button>
           <button type="submit" className="btn btn-primary">Create Task</button>
         </div>
       </div>
