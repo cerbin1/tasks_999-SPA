@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 function CreateTask(props) {
-  const [task, setTask] = useState({ name: '', deadline: '', subtasks: [], labels: [] })
+  const [task, setTask] = useState({ name: '', deadline: '', category: '', subtasks: [], labels: [] })
   const [users, setUsers] = useState()
   const [priorities, setPriorities] = useState()
   const [categories, setCategories] = useState()
@@ -136,6 +136,9 @@ function CreateTask(props) {
     }
     if (task.deadline.length == 0) {
       errors.deadline = true;
+    }
+    if (task.category.length == 0 || task.category == 'NO_CATEGORY') {
+      errors.category = true;
     }
     if (!task.subtasks.every((subtask) => subtask.name)) {
       errors.subtasks = true;
@@ -309,6 +312,11 @@ function CreateTask(props) {
               {categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
             </select>
           </div>
+          {errors && errors.category &&
+            <div className="alert alert-danger" role="alert">
+              You must change category before submitting.
+            </div>
+          }
         </div>
       }
 

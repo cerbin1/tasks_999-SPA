@@ -72,6 +72,9 @@ public class TasksController {
         if (deadline.isBefore(LocalDateTime.now())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline can have to be future time."));
         }
+        if (task.getCategory() == TaskCategory.NO_CATEGORY) {
+            ResponseEntity.badRequest().body(new MessageResponse("Error: Category have to be changed."));
+        }
         Task taskCreated = taskService.createTaskWithSubtasks(task);
         notificationsRepository.createForTask(taskCreated);
         return new ResponseEntity<>(taskCreated, CREATED);
@@ -89,6 +92,9 @@ public class TasksController {
         }
         if (deadline.isBefore(LocalDateTime.now())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Deadline have to be future time."));
+        }
+        if (task.getCategory() == TaskCategory.NO_CATEGORY) {
+            ResponseEntity.badRequest().body(new MessageResponse("Error: Category have to be changed."));
         }
         if (tasksRepository.existsById(id)) {
             Task taskUpdated = taskService.updateTaskWithSubtasks(task);
