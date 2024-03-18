@@ -13,7 +13,6 @@ import lombok.Setter;
 public class Subtask {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

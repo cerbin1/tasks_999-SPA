@@ -17,20 +17,15 @@ import java.util.List;
 public class Task {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String name;
 
-    @Column
     private LocalDateTime deadline;
 
-    @Column
     private LocalDateTime completeDate;
 
-    @Column
     private Boolean completed = false;
 
     @ManyToOne
@@ -66,7 +61,6 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskCategory category;
 
-    @Column
     @ElementCollection
     private List<String> labels;
 

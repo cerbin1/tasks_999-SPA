@@ -15,11 +15,9 @@ import java.time.LocalDateTime;
 public class Notification {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String name;
 
     @ManyToOne
@@ -30,14 +28,11 @@ public class Notification {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column
     private LocalDateTime createDate;
 
-    @Column
     @Setter
     private Boolean read;
 
-    @Column
     @Setter
     private LocalDateTime readDate;
 
