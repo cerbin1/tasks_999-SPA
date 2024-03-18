@@ -132,11 +132,14 @@ function TaskDetails(props) {
         </div>
 
         <h1>Labels</h1>
-        {task.labels && task.labels.map((label, index) => {
-          return <div key={index} className="input-group mb-1">
-            <span className="form-control">{label}</span>
-          </div>
-        })}
+        {task.labels && task.labels.length == 0 ?
+          "No labels added." :
+          task.labels.map((label, index) => {
+            return <div key={index} className="input-group mb-1">
+              <span className="form-control">{label}</span>
+            </div>
+          })
+        }
 
         <h1>Category</h1>
         <div className="row">
