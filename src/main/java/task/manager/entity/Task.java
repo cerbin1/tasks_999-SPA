@@ -50,8 +50,7 @@ public class Task {
     @JoinColumn(name = "task_id")
     private List<Subtask> subtasks;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "task_id")
+    @OneToMany(mappedBy = "task")
     private List<ChatMessage> messages;
 
     @OneToOne(mappedBy = "task", cascade = CascadeType.ALL)
