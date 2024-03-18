@@ -27,7 +27,7 @@ public class ReminderScheduler {
     }
 
     @Scheduled(fixedDelay = 10000)
-    public void distributeReports() {
+    public void sendEmailReminders() {
         List<TaskReminder> remindersToSend = taskRemindersService.getRemindersToSend();
         remindersToSend.forEach(taskReminder -> {
             String linkToTaskDetails = applicationFrontUrl + taskReminder.getTask().getId() + "/details";
