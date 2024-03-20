@@ -166,6 +166,26 @@ function TaskDetails(props) {
       });
   }
 
+  function handleDeleteWorklogButton(worklogId) {
+    fetch(apiUrl + 'tasks/worklog/' + worklogId, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then(() => {
+        loadTaskDetails();
+      })
+      .catch(error => {
+        alert(error)
+      });
+  }
+
   return <div className='container'>
     {task &&
       <div>
@@ -269,7 +289,7 @@ function TaskDetails(props) {
                   <th scope="col">Date</th>
                   <th scope="col">Minutes</th>
                   <th scope="col">Comment</th>
-                  <th scope="col">Edit</th>
+                  <th scope="col">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -278,7 +298,7 @@ function TaskDetails(props) {
                     <td>{worklog.date}</td>
                     <td>{worklog.minutes}</td>
                     <td>{worklog.comment}</td>
-                    <td><button>Edit</button></td>
+                    <td><button onClick={() => handleDeleteWorklogButton(worklog.id)}>Delete</button></td>
                   </tr>
                 ))}
               </tbody>

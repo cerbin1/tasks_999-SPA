@@ -9,6 +9,7 @@ import task.manager.entity.TaskCategory;
 import task.manager.entity.Worklog;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.TasksRepository;
+import task.manager.entity.repository.WorklogsRepository;
 import task.manager.security.jwt.MessageResponse;
 import task.manager.service.TaskService;
 import task.manager.utils.AuthenticationUtils;
@@ -27,12 +28,14 @@ public class TasksController {
     private final TasksRepository tasksRepository;
     private final TaskService taskService;
     private final NotificationsRepository notificationsRepository;
+    private final WorklogsRepository worklogsRepository;
 
     @Autowired
-    public TasksController(TasksRepository tasksRepository, TaskService taskService, NotificationsRepository notificationsRepository) {
+    public TasksController(TasksRepository tasksRepository, TaskService taskService, NotificationsRepository notificationsRepository, WorklogsRepository worklogsRepository) {
         this.tasksRepository = tasksRepository;
         this.taskService = taskService;
         this.notificationsRepository = notificationsRepository;
+        this.worklogsRepository = worklogsRepository;
     }
 
     @GetMapping
@@ -190,6 +193,21 @@ public class TasksController {
                     return ResponseEntity.badRequest().body(new MessageResponse("Error: Minutes are required."));
                 }
                 taskService.appendWorklogToTask(worklog, task);
+                return new ResponseEntity<>(OK);
+            }
+            return new ResponseEntity<>(BAD_REQUEST);
+        }
+        return new ResponseEntity<>(NOT_FOUND);
+    }
+
+    @DeleteMapping("/worklog/{worklogId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> deleteWorklogById(@PathVariable Long worklogId) {
+        if (worklogsRepository.existsById(worklogId)) {
+            Optional<Worklog> maybeWorklog = worklogsRepository.findById(worklogId);
+            if (maybeWorklog.isPresent()) {
+                Worklog worklog = maybeWorklog.get();
+                worklogsRepository.delete(worklog);
                 return new ResponseEntity<>(OK);
             }
             return new ResponseEntity<>(BAD_REQUEST);
