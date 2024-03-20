@@ -4,16 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import task.manager.entity.Task;
-import task.manager.entity.TaskCategory;
-import task.manager.entity.Worklog;
+import task.manager.entity.*;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.TasksRepository;
 import task.manager.entity.repository.WorklogsRepository;
 import task.manager.security.jwt.MessageResponse;
 import task.manager.service.TaskService;
 import task.manager.utils.AuthenticationUtils;
+import task.manager.utils.DateUtils;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,22 @@ public class TasksController {
         }
         Task taskCreated = taskService.createTaskWithSubtasks(task);
         notificationsRepository.createForTask(taskCreated);
+        createGoogleCalendarEventFrom(task);
         return new ResponseEntity<>(taskCreated, CREATED);
+    }
+
+    private void createGoogleCalendarEventFrom(Task task) {
+        GoogleCalendarIntegration googleCalendarIntegration = new GoogleCalendarIntegration();
+        try {
+            StringBuilder result = new StringBuilder();
+            List<String> collect = task.getSubtasks().stream().map(Subtask::getName).toList();
+            for (String s : collect) {
+                result.append("<li>").append(s).append("</li>");
+            }
+            googleCalendarIntegration.createGoogleCalendarEvent(task.getName(), result.toString(), DateUtils.localDateTimeToDate(task.getDeadline()));
+        } catch (IOException | GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/{id}")
