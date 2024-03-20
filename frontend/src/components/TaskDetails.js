@@ -199,7 +199,7 @@ function TaskDetails(props) {
         </div>
 
         <div className="row">
-          <label htmlFor="prority" className="col-sm-4 col-form-label fw-bold">Assignee</label>
+          <label className="col-sm-4 col-form-label fw-bold">Assignee</label>
           <p className="col-sm-8">{task.assignee.name}</p>
         </div>
 
