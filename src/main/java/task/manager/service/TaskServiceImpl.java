@@ -56,8 +56,17 @@ public class TaskServiceImpl implements TaskService {
         Long loggedUserId = AuthenticationUtils.getLoggedUserId();
         worklog.setCreator(usersRepository.findById(loggedUserId).orElseThrow());
         worklog.setModificationDate(LocalDateTime.now());
+        deletePreviousWorklogIfExistToUpdateItsValue(worklog, task);
         task.getWorklogs().add(worklog);
         tasksRepository.save(task);
+    }
+
+    private void deletePreviousWorklogIfExistToUpdateItsValue(Worklog worklog, Task task) {
+        task.getWorklogs()
+                .stream()
+                .filter(nextWorklog -> nextWorklog.getId().equals(worklog.getId()))
+                .findFirst()
+                .ifPresent(value -> task.getWorklogs().remove(value));
     }
 
     private Task saveTaskWithSubtasksInSequence(Task task) {

@@ -7,7 +7,8 @@ function TaskDetails(props) {
   const [showChat, setShowChat] = useState()
   const [messageContent, setMessageContent] = useState()
   const [log, setLog] = useState({ date: '', minutes: '', comment: '' })
-  const closeRef = useRef();
+  const closeModal = useRef();
+  const openModal = useRef();
   const [errors, setErrors] = useState();
   const [logErrors, setLogErrors] = useState();
 
@@ -159,7 +160,7 @@ function TaskDetails(props) {
       })
       .then(() => {
         loadTaskDetails();
-        closeRef.current.click();
+        closeModal.current.click();
         setLog({ date: '', minutes: '', comment: '' });
       })
       .catch(error => {
@@ -290,6 +291,7 @@ function TaskDetails(props) {
                   <th scope="col">Date</th>
                   <th scope="col">Minutes</th>
                   <th scope="col">Comment</th>
+                  <th scope="col">Edit</th>
                   <th scope="col">Delete</th>
                 </tr>
               </thead>
@@ -299,6 +301,17 @@ function TaskDetails(props) {
                     <td>{worklog.date}</td>
                     <td>{worklog.minutes}</td>
                     <td>{worklog.comment}</td>
+                    <td><button onClick={() => {
+
+                      setLog({
+                        id: worklog.id,
+                        date: worklog.date,
+                        minutes: worklog.minutes,
+                        comment: worklog.comment,
+                      })
+                      openModal.current.click()
+                    }
+                    }>Edit</button></td>
                     <td><button onClick={() => handleDeleteWorklogButton(worklog.id)}>Delete</button></td>
                   </tr>
                 ))}
@@ -309,7 +322,7 @@ function TaskDetails(props) {
 
         <div className='form-control'>
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
-          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logTimeModal">
+          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logTimeModal" ref={openModal}>
             Log time
           </button>
           <button type="button" className="btn btn-success" onClick={markTaskAsCompleted}>Mark as completed</button>
@@ -320,7 +333,7 @@ function TaskDetails(props) {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="logTimeModalLabel">Worklog</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ref={closeRef}></button>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ref={closeModal}></button>
               </div>
               <div className="modal-body">
                 <form onSubmit={logTime}>
