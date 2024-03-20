@@ -160,6 +160,7 @@ function TaskDetails(props) {
       .then(() => {
         loadTaskDetails();
         closeRef.current.click();
+        setLog({ date: '', minutes: '', comment: '' });
       })
       .catch(error => {
         alert(error)
