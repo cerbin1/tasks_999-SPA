@@ -66,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
                 .stream()
                 .filter(nextWorklog -> nextWorklog.getId().equals(worklog.getId()))
                 .findFirst()
-                .ifPresent(value -> task.getWorklogs().remove(value));
+                .ifPresent(worklogWithOldValues -> task.getWorklogs().remove(worklogWithOldValues));
     }
 
     private Task saveTaskWithSubtasksInSequence(Task task) {
