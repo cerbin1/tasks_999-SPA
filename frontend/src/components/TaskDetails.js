@@ -351,7 +351,7 @@ function TaskDetails(props) {
                   }
                   <input type="text" className="form-control" id="comment" value={log.comment} placeholder='Comment' onChange={handleChange} />
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary"
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal"
                     >Close</button>
                     <button type="submit" className="btn btn-primary">Log Time</button>
                   </div>
