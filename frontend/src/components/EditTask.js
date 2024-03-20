@@ -8,6 +8,7 @@ function EditTask(props) {
   const [priorities, setPriorities] = useState()
   const [files, setFiles] = useState([]);
   const [categories, setCategories] = useState()
+  const [showWorklogs, setShowWorklogs] = useState()
   const [errors, setErrors] = useState();
 
   const apiUrl = 'http://localhost:8080/api/';
@@ -361,11 +362,11 @@ function EditTask(props) {
                 {categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
               </select>
             </div>
-          {errors && errors.category &&
-            <div className="alert alert-danger" role="alert">
-              You must change category before submitting.
-            </div>
-          }
+            {errors && errors.category &&
+              <div className="alert alert-danger" role="alert">
+                You must change category before submitting.
+              </div>
+            }
           </div>
         }
 
@@ -394,6 +395,34 @@ function EditTask(props) {
             File was uploaded. If you want to upload new files you need to delete all previous one first.
             <button type="button" className="btn btn-danger" onClick={handleDeleteAllTaskFilesButton}>Delete all files</button>
           </div>
+        }
+
+        <h1>Worklogs</h1>
+        {showWorklogs ?
+          <div className="list-group">
+            {task.worklogs.length ?
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Minutes</th>
+                    <th scope="col">Comment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {task.worklogs.map((worklog, i) => (
+                    <tr key={i}>
+                      <td>{worklog.date}</td>
+                      <td>{worklog.minutes}</td>
+                      <td>{worklog.comment}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              : <b>No data.</b>}
+          </div>
+          :
+          <button type="button" className="btn btn-primary" onClick={() => setShowWorklogs(true)}>Show worklogs</button>
         }
 
         <div className='form-control'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Subtask from './Subtask';
 
@@ -6,7 +6,10 @@ function TaskDetails(props) {
   const [task, setTask] = useState()
   const [showChat, setShowChat] = useState()
   const [messageContent, setMessageContent] = useState()
+  const [log, setLog] = useState({ date: '', minutes: '', comment: '' })
+  const closeRef = useRef();
   const [errors, setErrors] = useState();
+  const [logErrors, setLogErrors] = useState();
 
   const apiUrl = 'http://localhost:8080/api/';
 
@@ -101,12 +104,66 @@ function TaskDetails(props) {
   }
 
 
-  function handleChange(event) {
+  function handleMessageContentChange(event) {
     setMessageContent(event.target.value);
+  }
+
+  function handleChange(event) {
+    console.log(event)
+    setLog({
+      ...log,
+      [event.target.id]: event.target.value
+    })
   }
 
   function handleCancelButton() {
     navigate('/myList');
+  }
+
+
+  function validateLogValues() {
+    let logErrors = {};
+    if (log.date.length == 0) {
+      logErrors.date = true;
+    }
+    if (log.minutes.length == 0) {
+      logErrors.minutes = true;
+    }
+    console.log(logErrors)
+    return logErrors;
+  };
+
+  function logTime(event) {
+    event.preventDefault();
+
+    console.log(event)
+
+    const logErrors = validateLogValues();
+    setLogErrors(logErrors)
+    if (Object.keys(logErrors).length !== 0) {
+      return;
+    }
+
+    fetch(apiUrl + 'tasks/worklog?taskId=' + task.id, {
+      method: 'PUT',
+      body: JSON.stringify(log),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then(() => {
+        loadTaskDetails();
+        closeRef.current.click();
+      })
+      .catch(error => {
+        alert(error)
+      });
   }
 
   return <div className='container'>
@@ -163,7 +220,7 @@ function TaskDetails(props) {
               <div>
                 {task.messages.map((message, index) => {
                   if (message.sender.id == localStorage.getItem('userId')) {
-                    return <div class="d-flex flex-row" key={index}>
+                    return <div className="d-flex flex-row" key={index}>
                       <div>
                         <b>{message.sender.name}:</b>
                         <p>{message.content} </p>
@@ -171,7 +228,7 @@ function TaskDetails(props) {
                     </div>
                   }
                   else {
-                    return <div class="d-flex flex-row-reverse" key={index}>
+                    return <div className="d-flex flex-row-reverse" key={index}>
                       <div>
                         <b>{message.sender.name}:</b>
                         <p>{message.content} </p>
@@ -183,7 +240,7 @@ function TaskDetails(props) {
               </div>
             }
             <form onSubmit={sendMessage}>
-              <input type="text" className="form-control" id="name" value={messageContent} onChange={handleChange} placeholder='Message content
+              <input type="text" className="form-control" id="name" value={messageContent} onChange={handleMessageContentChange} placeholder='Message content
               ' />
               {errors && errors.messageContent &&
                 <div className="alert alert-danger" role="alert">
@@ -196,19 +253,81 @@ function TaskDetails(props) {
           </> :
           <button type="button" className="btn btn-primary" onClick={() => setShowChat(true)}>Show chat</button>
         }
-
         <h1>Files</h1>
-        <div class="list-group">
+        <div className="list-group">
           {task.taskFiles.map((file, i) => (
             <a key={i} className="list-group-item list-group-item-action" href={`${apiUrl}files/${file.id}`}>{file.name}</a>
           ))}
         </div>
 
+        <h1>Worklogs</h1>
+        <div className="list-group">
+          {task.worklogs.length ?
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Minutes</th>
+                  <th scope="col">Comment</th>
+                  <th scope="col">Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {task.worklogs.map((worklog, i) => (
+                  <tr key={i}>
+                    <td>{worklog.date}</td>
+                    <td>{worklog.minutes}</td>
+                    <td>{worklog.comment}</td>
+                    <td><button>Edit</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            : <b>No data.</b>}
+        </div>
+
         <div className='form-control'>
           <button type="button" className="btn btn-secondary" onClick={handleCancelButton}>Cancel</button>
+          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#logTimeModal">
+            Log time
+          </button>
           <button type="button" className="btn btn-success" onClick={markTaskAsCompleted}>Mark as completed</button>
         </div>
+
+        <div className="modal fade" id="logTimeModal" tabIndex="-1" aria-labelledby="#logTimeModalLabel" >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="logTimeModalLabel">Worklog</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" ref={closeRef}></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={logTime}>
+                  <input type="date" className="form-control" id="date" value={log.date} onChange={handleChange} />
+                  {logErrors && logErrors.date &&
+                    <div className="alert alert-danger" role="alert">
+                      You must enter content before sending the message.
+                    </div>
+                  }
+                  <input type="number" className="form-control" id="minutes" value={log.minutes} placeholder="Minutes worked" min="1" max="1000" onChange={handleChange} />
+                  {logErrors && logErrors.minutes &&
+                    <div className="alert alert-danger" role="alert">
+                      You must enter content before sending the message.
+                    </div>
+                  }
+                  <input type="text" className="form-control" id="comment" value={log.comment} placeholder='Comment' onChange={handleChange} />
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary"
+                    >Close</button>
+                    <button type="submit" className="btn btn-primary">Log Time</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
     }
   </div>
 }

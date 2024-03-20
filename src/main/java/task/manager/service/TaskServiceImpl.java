@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import task.manager.entity.Subtask;
 import task.manager.entity.Task;
 import task.manager.entity.TaskReminder;
+import task.manager.entity.Worklog;
 import task.manager.entity.repository.TasksRepository;
 import task.manager.entity.repository.UsersRepository;
 import task.manager.utils.AuthenticationUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +49,15 @@ public class TaskServiceImpl implements TaskService {
         return StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
                 .filter(task -> task.getAssignee().getId().equals(userId) || task.getCreator().getId().equals(userId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void appendWorklogToTask(Worklog worklog, Task task) {
+        Long loggedUserId = AuthenticationUtils.getLoggedUserId();
+        worklog.setCreator(usersRepository.findById(loggedUserId).orElseThrow());
+        worklog.setModificationDate(LocalDateTime.now());
+        task.getWorklogs().add(worklog);
+        tasksRepository.save(task);
     }
 
     private Task saveTaskWithSubtasksInSequence(Task task) {

@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import task.manager.entity.Task;
 import task.manager.entity.TaskCategory;
+import task.manager.entity.Worklog;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.TasksRepository;
 import task.manager.security.jwt.MessageResponse;
@@ -173,5 +174,26 @@ public class TasksController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getAllCategories() {
         return new ResponseEntity<>(TaskCategory.values(), OK);
+    }
+
+    @PutMapping("/worklog")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> createWorklog(@RequestParam Long taskId, @RequestBody Worklog worklog) {
+        if (tasksRepository.existsById(taskId)) {
+            Optional<Task> maybeTask = tasksRepository.findById(taskId);
+            if (maybeTask.isPresent()) {
+                Task task = maybeTask.get();
+                if (worklog.getDate() == null) {
+                    return ResponseEntity.badRequest().body(new MessageResponse("Error: Date is required."));
+                }
+                if (worklog.getMinutes() == null) {
+                    return ResponseEntity.badRequest().body(new MessageResponse("Error: Minutes are required."));
+                }
+                taskService.appendWorklogToTask(worklog, task);
+                return new ResponseEntity<>(OK);
+            }
+            return new ResponseEntity<>(BAD_REQUEST);
+        }
+        return new ResponseEntity<>(NOT_FOUND);
     }
 }

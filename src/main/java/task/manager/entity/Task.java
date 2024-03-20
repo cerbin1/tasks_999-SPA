@@ -64,6 +64,11 @@ public class Task {
     @ElementCollection
     private List<String> labels;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "task_id")
+
+    private List<Worklog> worklogs;
+
     public void markAsCompleted() {
         this.completed = true;
         this.completeDate = LocalDateTime.now();
