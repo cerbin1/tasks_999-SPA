@@ -188,6 +188,19 @@ function TaskDetails(props) {
       });
   }
 
+
+  function handleEditWorklogButton(setLog, worklog, openModal) {
+    return () => {
+      setLog({
+        id: worklog.id,
+        date: worklog.date,
+        minutes: worklog.minutes,
+        comment: worklog.comment,
+      });
+      openModal.current.click();
+    };
+  }
+
   return <div className='container'>
     {task &&
       <div>
@@ -301,16 +314,7 @@ function TaskDetails(props) {
                     <td>{worklog.date}</td>
                     <td>{worklog.minutes}</td>
                     <td>{worklog.comment}</td>
-                    <td><button onClick={() => {
-
-                      setLog({
-                        id: worklog.id,
-                        date: worklog.date,
-                        minutes: worklog.minutes,
-                        comment: worklog.comment,
-                      })
-                      openModal.current.click()
-                    }
+                    <td><button onClick={handleEditWorklogButton(setLog, worklog, openModal)
                     }>Edit</button></td>
                     <td><button onClick={() => handleDeleteWorklogButton(worklog.id)}>Delete</button></td>
                   </tr>
