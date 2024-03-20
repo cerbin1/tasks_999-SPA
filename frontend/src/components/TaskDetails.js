@@ -314,9 +314,9 @@ function TaskDetails(props) {
                     <td>{worklog.date}</td>
                     <td>{worklog.minutes}</td>
                     <td>{worklog.comment}</td>
-                    <td><button onClick={handleEditWorklogButton(setLog, worklog, openModal)
+                    <td><button type="button" className="btn btn-primary" onClick={handleEditWorklogButton(setLog, worklog, openModal)
                     }>Edit</button></td>
-                    <td><button onClick={() => handleDeleteWorklogButton(worklog.id)}>Delete</button></td>
+                    <td><button type="button" className="btn btn-danger" onClick={() => handleDeleteWorklogButton(worklog.id)}>Delete</button></td>
                   </tr>
                 ))}
               </tbody>
