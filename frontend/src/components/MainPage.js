@@ -10,6 +10,7 @@ import EditTask from './EditTask'
 import TaskDetails from './TaskDetails'
 import LoggedInUserLayout from './LoggedInUserLayout'
 import LoggedOutUserLayout from './LoggedOutUserLayout'
+import Stats from './Stats'
 import AdminPanelUserList from './AdminPanelUserList'
 import Notifications from './Notifications'
 
@@ -31,6 +32,7 @@ function MainPage(props) {
             <Route path="edit" element={<EditTask />} />
             <Route path=":id/details" element={<TaskDetails />} />
             <Route path="admin" element={<AdminPanelUserList />} />
+            <Route path="stats" element={<Stats />} />
             <Route path="notifications" element={<Notifications />} />
           </Route>
         </Routes>
