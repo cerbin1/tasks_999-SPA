@@ -25,6 +25,24 @@ function Stats() {
         alert(error)
       });
 
+    fetch(apiUrl + '/userLoggedTime', {
+      headers: {
+        "Authorization": `Bearer ` + localStorage.getItem('token'),
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        loadMinutesLoggedByUsersChart(data);
+      })
+      .catch(error => {
+        alert(error)
+      });
+
     fetch(apiUrl, {
       headers: {
         "Authorization": `Bearer ` + localStorage.getItem('token'),
@@ -72,6 +90,33 @@ function Stats() {
     });
   }
 
+  function loadMinutesLoggedByUsersChart(data) {
+    const ctx = document.getElementById('minutesLoggedByUsersChart');
+
+    if (window.minutesLoggedByUsersChart && typeof window.minutesLoggedByUsersChart.destroy === 'function') {
+      window.minutesLoggedByUsersChart.destroy();
+    }
+
+    window.minutesLoggedByUsersChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.map(row => row.name),
+        datasets: [{
+          label: '# minutes worked',
+          data: data.map(row => row.minutesLogged),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
   return <div>
     {statistics && <div>
       <div class="card">
@@ -106,6 +151,7 @@ function Stats() {
       </div>
     </div>}
     <canvas id="numberOfTasksChart"></canvas>
+    <canvas id="minutesLoggedByUsersChart"></canvas>
   </div>
 }
 

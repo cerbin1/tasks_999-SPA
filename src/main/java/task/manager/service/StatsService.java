@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import task.manager.controllers.dto.StatisticDto;
 import task.manager.controllers.dto.TasksCountForDateDto;
+import task.manager.controllers.dto.TimeLoggedDto;
+import task.manager.entity.Task;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.SubtasksRepository;
 import task.manager.entity.repository.TasksRepository;
@@ -12,6 +14,7 @@ import task.manager.entity.repository.UsersRepository;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.StreamSupport;
 
 import static java.util.Map.Entry.comparingByKey;
@@ -69,6 +72,27 @@ public class StatsService {
         long subtasksCreated = subtasksRepository.count();
         long notificationsCreated = notificationsRepository.count();
         return new StatisticDto(usersCount, tasksCreated, tasksCompleted, subtasksCreated, notificationsCreated);
+    }
+
+    public List<TimeLoggedDto> getTimeLoggedByUsers() {
+        Map<String, List<Task>> tasksByUserName = getTasksByUserName();
+        List<TimeLoggedDto> timeLoggedByUsersList = new ArrayList<>();
+        tasksByUserName
+                .keySet().forEach(
+                        nextUsername -> {
+                            AtomicReference<Long> sum = new AtomicReference<>(0L);
+                            List<Task> tasks = tasksByUserName.get(nextUsername);
+                            tasks.forEach(task -> task.getWorklogs().forEach(worklog -> sum.updateAndGet(v -> v + worklog.getMinutes())));
+                            timeLoggedByUsersList.add(new TimeLoggedDto(nextUsername, sum.get()));
+                        }
+                );
+        return timeLoggedByUsersList;
+    }
+
+    private Map<String, List<Task>> getTasksByUserName() {
+        return StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
+                .filter(task -> task.getAssignee() != null)
+                .collect(groupingBy(task -> task.getAssignee().getName()));
     }
 }
 

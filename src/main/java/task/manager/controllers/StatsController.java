@@ -27,6 +27,12 @@ public class StatsController {
         return new ResponseEntity<>(statsService.getNumberOfTasks(), OK);
     }
 
+    @GetMapping("/userLoggedTime")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getUsersTimeLoggedStats() {
+        return new ResponseEntity<>(statsService.getTimeLoggedByUsers(), OK);
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<StatisticDto> getStatistics() {
