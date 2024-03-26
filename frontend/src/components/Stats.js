@@ -119,32 +119,32 @@ function Stats() {
 
   return <div>
     {statistics && <div>
-      <div class="card">
-        <div class="card-body">
+      <div className="card">
+        <div className="card-body">
           Number of users:
           <span className="fw-bold px-1">{statistics.usersCount}</span>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
+      <div className="card">
+        <div className="card-body">
           Number of tasks created:
           <span className="fw-bold px-1">{statistics.tasksCreated}</span>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
+      <div className="card">
+        <div className="card-body">
           Number of tasks completed:
           <span className="fw-bold px-1">{statistics.tasksCompleted}</span>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
+      <div className="card">
+        <div className="card-body">
           Number of subtasks:
           <span className="fw-bold px-1">{statistics.subtasksCount}</span>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
+      <div className="card">
+        <div className="card-body">
           Number of notifications:
           <span className="fw-bold px-1">{statistics.notificationsCount}</span>
         </div>
