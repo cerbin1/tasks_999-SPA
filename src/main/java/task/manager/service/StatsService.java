@@ -3,6 +3,8 @@ package task.manager.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import task.manager.controllers.StatisticDto;
+import task.manager.controllers.TasksCountForDateDto;
+import task.manager.controllers.TimeLoggedDto;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.SubtasksRepository;
 import task.manager.entity.repository.TasksRepository;
@@ -33,7 +35,7 @@ public class StatsService {
         this.notificationsRepository = notificationsRepository;
     }
 
-    public List<TasksCountForDate> getNumberOfTasks() {
+    public List<TasksCountForDateDto> getNumberOfTasks() {
         Map<LocalDate, Long> groupedByDate =
                 StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
                         .map(task -> task.getDeadline().toLocalDate())
@@ -52,8 +54,8 @@ public class StatsService {
                 .sorted(comparingByKey())
                 .collect(toMap(Entry::getKey, Entry::getValue, (oldValue, newValue) -> oldValue, HashMap::new));
 
-        List<TasksCountForDate> result = new ArrayList<>();
-        sortedByDate.forEach((date, count) -> result.add(new TasksCountForDate(date, count)));
+        List<TasksCountForDateDto> result = new ArrayList<>();
+        sortedByDate.forEach((date, count) -> result.add(new TasksCountForDateDto(date, count)));
 
         return result;
     }
