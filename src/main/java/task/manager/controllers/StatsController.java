@@ -6,10 +6,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import task.manager.entity.Task;
 import task.manager.service.StatsService;
+import task.manager.service.XY;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -26,8 +28,8 @@ public class StatsController {
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getAllTasks() {
-        List<Object> tasks =  statsService.getTasks();
-        return new ResponseEntity<>(null, OK);
+        List<XY> tasks = statsService.getTasks();
+        return new ResponseEntity<>(tasks, OK);
     }
 
 }
