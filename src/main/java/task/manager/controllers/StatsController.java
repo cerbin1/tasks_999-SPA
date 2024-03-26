@@ -20,9 +20,15 @@ public class StatsController {
         this.statsService = statsService;
     }
 
+    @GetMapping("/tasksCount")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getTasksCount() {
+        return new ResponseEntity<>(statsService.getNumberOfTasks(), OK);
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> getAllTasks() {
-        return new ResponseEntity<>(statsService.getNumberOfTasks(), OK);
+    public ResponseEntity<StatisticDto> getStatistics() {
+        return new ResponseEntity<>(statsService.getStatistics(), OK);
     }
 }
