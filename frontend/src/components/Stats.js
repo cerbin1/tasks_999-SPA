@@ -118,6 +118,7 @@ function Stats() {
   }
 
   return <div>
+    <h2>General statistics</h2>
     {statistics && <div>
       <div className="card">
         <div className="card-body">
@@ -150,7 +151,10 @@ function Stats() {
         </div>
       </div>
     </div>}
+    <h2></h2>
+    <h2>Number of tasks per day by deadline</h2>
     <canvas id="numberOfTasksChart"></canvas>
+    <h2>Number of minutes logged by user</h2>
     <canvas id="minutesLoggedByUsersChart"></canvas>
   </div>
 }
