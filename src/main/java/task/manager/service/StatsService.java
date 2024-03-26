@@ -6,8 +6,11 @@ import task.manager.entity.repository.TasksRepository;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Map.Entry;
 import java.util.stream.StreamSupport;
+
+import static java.util.Map.Entry.comparingByKey;
+import static java.util.stream.Collectors.*;
 
 @Service
 public class StatsService {
@@ -19,42 +22,29 @@ public class StatsService {
         this.tasksRepository = tasksRepository;
     }
 
-    public List<XY> getTasks() {
-
+    public List<TasksCountForDate> getNumberOfTasks() {
         Map<LocalDate, Long> groupedByDate =
                 StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
                         .map(task -> task.getDeadline().toLocalDate())
                         .sorted()
                         .toList()
                         .stream()
-                        .collect(Collectors.groupingBy(date -> date, Collectors.counting()))
+                        .collect(groupingBy(date -> date, counting()))
                         .entrySet().stream()
-                        .sorted(Map.Entry.comparingByKey())
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                                (oldValue, newValue) -> oldValue, HashMap::new));
-        Map<LocalDate, Long> dateCounts = new TreeMap<>();
+                        .sorted(comparingByKey())
+                        .collect(toMap(Entry::getKey, Entry::getValue, (oldValue, newValue) -> oldValue, HashMap::new));
 
-        groupedByDate.keySet().forEach(localDate -> dateCounts.put(localDate, groupedByDate.get(localDate)));
+        Map<LocalDate, Long> counts = new TreeMap<>();
+        groupedByDate.keySet().forEach(localDate -> counts.put(localDate, groupedByDate.get(localDate)));
 
-//        StreamSupport.stream(tasksRepository.findAll().spliterator(), false)
-//                .map(task -> task.getDeadline().toLocalDate())
-//                .collect(Collectors.groupingBy(localDate -> localDate.with(TemporalAdjusters.ofDateAdjuster())))
+        Map<LocalDate, Long> sortedByDate = counts.entrySet().stream()
+                .sorted(comparingByKey())
+                .collect(toMap(Entry::getKey, Entry::getValue, (oldValue, newValue) -> oldValue, HashMap::new));
 
+        List<TasksCountForDate> result = new ArrayList<>();
+        sortedByDate.forEach((date, count) -> result.add(new TasksCountForDate(date, count)));
 
-        Map<LocalDate, Long> sortedByDate = dateCounts.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-                        (oldValue, newValue) -> oldValue, HashMap::new));
-        List<XY> list = new ArrayList<>();
-
-        sortedByDate.forEach((date, count) ->
-                list.add(new XY(date, count)));
-
-        sortedByDate.forEach((date, count) ->
-                System.out.println("Date: " + date + " Count: " + count));
-
-
-        return list;
+        return result;
     }
 }
 

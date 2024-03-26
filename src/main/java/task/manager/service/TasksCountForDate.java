@@ -2,6 +2,6 @@ package task.manager.service;
 
 import java.time.LocalDate;
 
-public record XY(LocalDate date, Long count) {
+public record TasksCountForDate(LocalDate date, Long count) {
 
 }

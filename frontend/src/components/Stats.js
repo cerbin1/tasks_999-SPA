@@ -18,8 +18,7 @@ function Stats() {
         return response.json();
       })
       .then(data => {
-        console.log(data)
-        loadChart(data);
+        loadNumberOfTasksChart(data);
       })
       .catch(error => {
         alert(error)
@@ -27,14 +26,14 @@ function Stats() {
 
   }, []);
 
-  function loadChart(data) {
-    const ctx = document.getElementById('myChart');
- 
-    if (window.myChart && typeof window.myChart.destroy === 'function') {
-      window.myChart.destroy(); // Destroy the existing chart
+  function loadNumberOfTasksChart(data) {
+    const ctx = document.getElementById('numberOfTasksChart');
+
+    if (window.numberOfTasksChart && typeof window.numberOfTasksChart.destroy === 'function') {
+      window.numberOfTasksChart.destroy();
     }
 
-    window.myChart = new Chart(ctx, {
+    window.numberOfTasksChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: data.map(row => row.date),
@@ -54,10 +53,8 @@ function Stats() {
     });
   }
 
-
   return <div>
-
-    <canvas id="myChart"></canvas>
+    <canvas id="numberOfTasksChart"></canvas>
   </div>
 }
 
