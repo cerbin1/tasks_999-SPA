@@ -1,4 +1,4 @@
-package task.manager.controllers;
+package task.manager.controllers.dto;
 
 import java.time.LocalDate;
 

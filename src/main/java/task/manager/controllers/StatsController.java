@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import task.manager.controllers.dto.StatisticDto;
 import task.manager.service.StatsService;
 
 import static org.springframework.http.HttpStatus.OK;

@@ -2,9 +2,8 @@ package task.manager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import task.manager.controllers.StatisticDto;
-import task.manager.controllers.TasksCountForDateDto;
-import task.manager.controllers.TimeLoggedDto;
+import task.manager.controllers.dto.StatisticDto;
+import task.manager.controllers.dto.TasksCountForDateDto;
 import task.manager.entity.repository.NotificationsRepository;
 import task.manager.entity.repository.SubtasksRepository;
 import task.manager.entity.repository.TasksRepository;

@@ -1,4 +1,4 @@
-package task.manager.controllers;
+package task.manager.controllers.dto;
 
 public record StatisticDto(Long usersCount,
                            Long tasksCreated,
