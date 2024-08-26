@@ -1,0 +1,36 @@
+Functionalities:
+- navigation bar
+- user register
+- user confirm mail
+- user login
+- user logout
+- create task
+- list tasks
+- update task
+- display my tasks
+- display task info
+- remove task
+- search tasks by name
+- add new task notification
+- remove notification
+- mark notification as read
+- send email reminder 1 hour before task deadline
+- admin panel for admin users only
+- remove user
+- chat in task info
+- add subtasks
+- remove subtasks
+- update subtasks
+- add files to task
+- remove files from tasks
+- download file from task
+- add task categories
+- add searching by task categories
+- add task labels
+- add searching by task labels
+- add time logging to task
+- remove time logged from task
+- update time logged for task
+- add task to google calendar
+- add charts - general statistics, sum of tasks, sum of minutes logged by users
+
